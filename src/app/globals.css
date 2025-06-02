@@ -1,11 +1,44 @@
 @import "tailwindcss";
 
 :root {
-  --background: #000000;
-  --sidebar: #1a1a1a;
-  --card: #111111;
+  --background: #191919;
+  --sidebar: #191919;
+  --card: #222222;
   --primary-text: #e5e7eb;
   --secondary-text: #9ca3af;
   --hover: #222222;
   --accent: #10b981; /* green accent */
+  --border:#2b2b2b;
+  --links:#2a2929;
+  --cardContainer:#1c1c1c;
+}
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('/fonts/Roboto/RobotoCondensed-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900; /* Range for variable font */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('/fonts/Roboto/RobotoCondensed-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter/InterTight-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900; /* Range for variable font */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter/InterTight-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+*{
+  font-family: 'Inter';
 }
