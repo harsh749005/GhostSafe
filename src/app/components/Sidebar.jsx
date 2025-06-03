@@ -7,7 +7,7 @@ export default function Sidebar() {
   const sidebarItems = [
     // { id: "start", label: "Start & Explore", icon: "🚀" },
     {
-      id: "all-items",
+      id: "allitems",
       label: "All Items",
       icon: "📋",
       img: "/images/vault-solid.svg",
