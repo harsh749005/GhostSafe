@@ -21,7 +21,7 @@ const InputField = ({
 }: InputFieldProps) => {
   return (
     <div className="space-y-2">
-      <label htmlFor={label.toLowerCase()} className="block text-gray-300 text-sm">
+      <label htmlFor={label.toLowerCase()} className="block text-[#b0b0b0] text-sm">
         {label}
       </label>
       <div className="relative">
