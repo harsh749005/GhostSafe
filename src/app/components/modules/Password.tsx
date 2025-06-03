@@ -23,7 +23,7 @@ const PasswordManager = () => {
   };
 
   return (
-    <div style={{border:"var(--border)"}} className="bg-white shadow-lg rounded-lg max-w-4xl mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div style={{border: "var(--border)"}} className="bg-white shadow-lg rounded-lg max-w-4xl mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       {/* Header */}
       <div className="bg-[#212121] border-2 text-[#b0b0b0] px-4 py-3 flex items-center justify-between rounded-t-lg">
         <div className="flex items-center space-x-2">
@@ -36,7 +36,7 @@ const PasswordManager = () => {
           <button className="hover:bg-red-700 p-1 rounded">
             <Maximize2 className="h-5 w-5" />
           </button>
-          <button className="hover:bg-red-700 p-1 rounded">
+          <button  className="hover:bg-red-700 p-1 rounded">
             <X className="h-5 w-5" />
           </button>
         </div>
