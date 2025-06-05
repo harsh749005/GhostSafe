@@ -3,7 +3,7 @@ import { useState } from "react";
 import logo from "../../public/images/nature.png";
 import Password from "./components/modules/Password";
 import Sidebar from "./components/Sidebar"
-import Navbar from "./components/Navbar" 
+import Navbar from "./components/Navbar"
 function App() {
 
  
@@ -106,11 +106,7 @@ function App() {
         </main>
       </div>
 
-      {/* Add Button */}
-      <button className="fixed bottom-6 right-6 w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:bg-red-600 transition">
-        +
-      </button>
-      {/* <Password/> */}
+
     </div>
   );
 }
