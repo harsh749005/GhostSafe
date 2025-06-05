@@ -2,7 +2,7 @@
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import {  useState } from "react";
-import Password from "../components/modules/Password";
+import Notes from "../components/modules/Notes";
 
 export default function NotesManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
@@ -114,7 +114,7 @@ export default function NotesManager() {
         >
           +
         </button>
-        {visible && <Password />}
+        {visible && <Notes />}
       </div>
     </>
   );
