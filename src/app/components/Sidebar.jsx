@@ -27,13 +27,13 @@ export default function Sidebar() {
       img: "/images/address.svg",
     },
     {
-      id: "payment",
+      id: "paymentinfo",
       label: "Payment Cards",
       icon: "💳",
       img: "/images/wallet-2-line.svg",
     },
     {
-      id: "bank",
+      id: "bankaccountinfo",
       label: "Bank Accounts",
       icon: "🏦",
       img: "/images/bank-line.svg",
