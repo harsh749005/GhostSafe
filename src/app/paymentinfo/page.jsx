@@ -2,7 +2,7 @@
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import {  useState } from "react";
-import Password from "../components/modules/Password";
+import PaymentCard from "../components/modules/PaymentCard";
 
 export default function PaymentInfoManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
@@ -114,7 +114,7 @@ export default function PaymentInfoManager() {
         >
           +
         </button>
-        {visible && <Password />}
+        {visible && <PaymentCard />}
       </div>
     </>
   );

@@ -2,7 +2,7 @@
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import {  useState } from "react";
-import Password from "../components/modules/Password";
+import BankAcoount from "../components/modules/BankAcoount";
 
 export default function BankAccountManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
@@ -114,7 +114,7 @@ export default function BankAccountManager() {
         >
           +
         </button>
-        {visible && <Password />}
+        {visible && <BankAcoount />}
       </div>
     </>
   );

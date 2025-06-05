@@ -2,7 +2,7 @@
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import {  useState } from "react";
-import Password from "../components/modules/Password";
+import Address from "../components/modules/Address";
 
 export default function AddressManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
@@ -114,7 +114,7 @@ export default function AddressManager() {
         >
           +
         </button>
-        {visible && <Password />}
+        {visible && <Address />}
       </div>
     </>
   );
