@@ -29,7 +29,7 @@ export default function PasswordManager() {
                 className="text-xl font-semibold text-[#dededb]"
                 style={{ fontFamily: "Inter" }}
               >
-                All Items
+                Passwords
               </h2>
               <div className="flex items-center space-x-2">
                 {/* <button className="p-2 hover:bg-zinc-100 rounded-lg">
