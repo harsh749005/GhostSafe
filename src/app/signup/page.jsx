@@ -1,10 +1,11 @@
 "use client"
-import Logo from '../components/Logo'
+
 import { ArrowLeft } from 'lucide-react';
 import SocialLoginButton from '../components/SocialLoginButton';
 import { useState } from 'react';
 import InputField from '../components/InputField'
 import PasswordField from '../components/PasswordField';
+import axios from 'axios';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -24,12 +25,18 @@ function Login() {
     setEmailError('');
     return true;
   };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
 
     e.preventDefault();
     const isEmailValid = validateEmail(email);
     if (isEmailValid && password) {
       // Handle login logic
+      const response = await axios.post("/api/signup",{
+        username,
+        email,
+        password,
+      });
+      console.log(response);
       console.log('Signup with:', email, password);
     }
   };
@@ -119,7 +126,7 @@ function Login() {
           <div className="mt-8 text-center">
             <p className="text-[#B0B0B0]">
               Already have an account?{' '}
-              <a href="#" className="cursor-pointer text-blue-500 hover:text-blue-600 font-medium transition-colors">
+              <a href="/login" className="cursor-pointer text-blue-500 hover:text-blue-600 font-medium transition-colors">
                Login
               </a>
             </p>
