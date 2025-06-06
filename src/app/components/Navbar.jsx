@@ -1,9 +1,15 @@
 "use client"
 import { useState } from "react";
-
+import axios from "axios";
 export default function Navbar() {
     const [searchQuery, setSearchQuery] = useState("");
     const [visibility,setVisibility] = useState(false);
+
+    const handleLogOut = async () =>{
+      const response = await axios.get("/api/logout");
+      console.log(response);
+      window.location.href = "/login";
+    }
 
   return (
     <header
@@ -79,7 +85,7 @@ export default function Navbar() {
                 ...
               </div> */}
                   </div>
-                  <button className="w-full text-left px-4 py-2 text-sm hover:bg-zinc-800 text-red-400 font-medium cursor-pointer">
+                  <button onClick={handleLogOut} className="w-full text-left px-4 py-2 text-sm hover:bg-zinc-800 text-red-400 font-medium cursor-pointer">
                     Logout
                   </button>
                 </div>
