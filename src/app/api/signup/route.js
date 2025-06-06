@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 
 export async function POST(req) {
   const body =  await req.json();
-  const { name, email, password } = body;
+  const { username, email, password } = body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10); // 10 salt rounds
@@ -15,7 +15,7 @@ export async function POST(req) {
     const result = await sql `SELECT * FROM ghostsafe_user WHERE email=${email}`;
     const user = result[0];
     if (!user) {
-      await sql`INSERT INTO ghostsafe_user (name, email, password) VALUES (${name}, ${email}, ${hashedPassword})`;
+      await sql`INSERT INTO ghostsafe_user (name, email, password) VALUES (${username}, ${email}, ${hashedPassword})`;
       // console.log(result);
       return NextResponse.json({
         status: "success",
