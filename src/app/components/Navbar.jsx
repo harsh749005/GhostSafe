@@ -1,15 +1,20 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import {useUser} from '../context/UserContext'
 export default function Navbar() {
     const [searchQuery, setSearchQuery] = useState("");
     const [visibility,setVisibility] = useState(false);
-
+    const {user } = useUser();
     const handleLogOut = async () =>{
       const response = await axios.get("/api/logout");
       console.log(response);
       window.location.href = "/login";
     }
+    useEffect(()=>{
+
+      console.log(user);
+    },[user])
 
   return (
     <header
@@ -66,9 +71,11 @@ export default function Navbar() {
                 className="absolute right-4 mt-2 w-64 rounded-md shadow-lg  ring-1 ring-[#2b2b2b] ring-opacity-5 text-[#B0B0B0] z-50"
               >
                 <div className="px-4 py-3 border-b border-zinc-700">
-                  <p className="text-sm font-semibold">Harsh Patel</p>
+                  <p className="text-sm font-semibold">{user ? user.name :"Harsh Patel"}</p>
                   <p className="text-sm text-zinc-400">
-                    patelharsh749005@gmail.com
+                    {
+                    user ? (user.email):"patelharsh749005@gmail.com"
+                  }
                   </p>
                 </div>
 

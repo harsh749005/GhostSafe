@@ -29,7 +29,7 @@ export async function POST(req) {
             { expiresIn: "7d" }
         );
 
-        const response = NextResponse.json({ status: "success", message: "Logged in" });
+        const response = NextResponse.json({ status: "success", message: "Logged in",user });
 
         // Set HttpOnly cookie
         response.cookies.set("token", token, {
