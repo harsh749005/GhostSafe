@@ -2,15 +2,18 @@
 import Logo from "../components/Logo";
 import { ArrowLeft } from "lucide-react";
 import SocialLoginButton from "../components/SocialLoginButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "../components/InputField";
 import PasswordField from "../components/PasswordField";
 import axios from "axios";
+import {useUser} from '../context/UserContext'
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+const {setUser } = useUser();
+
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,9 +38,11 @@ function Login() {
           password,
         });
         if (response.status === 200) {
+          setUser({name:response.data.user.name,email:response.data.user.email})
           setEmail("");
           setPassword("");
           window.location.href = "/allitems";
+          
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -50,6 +55,7 @@ function Login() {
       }
       console.log("Login with:", email, password);
     }
+
   };
   return (
     <>
