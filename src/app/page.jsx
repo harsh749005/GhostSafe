@@ -9,7 +9,7 @@ function App() {
  
   const [hoveredIndex, setHoverIndex] = useState(null);
   return (
-    <div onMouseLeave={()=>setVisibility(false)}
+    <div 
       className="min-h-screen flex relative"
       style={{ backgroundColor: "var(--background)" }}
     >
