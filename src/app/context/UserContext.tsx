@@ -6,19 +6,23 @@ interface User {
   name: string;
   email: string;
 }
-
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
+  visible: boolean;
+  setVisible: (visible: boolean) => void;
 }
 
 const UserContext = createContext<UserContextType>({
   user: null,
   setUser: () => {},
+  visible:false,
+  setVisible : () =>{}
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
+ const [visible, setVisible] = useState(false);
 
   // Load user from localStorage on mount
   useEffect(() => {
@@ -43,7 +47,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, visible, setVisible }}>
+
       {children}
     </UserContext.Provider>
   );
