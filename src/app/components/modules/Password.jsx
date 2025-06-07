@@ -1,29 +1,66 @@
-import { useState } from 'react';
-import { Star, X, Maximize2, Eye, EyeOff, ChevronDown } from 'lucide-react';
+import { useState } from "react";
+import { Star, X, Maximize2, Eye, EyeOff, ChevronDown } from "lucide-react";
+
+import { urls } from "../urls";
+import axios from "axios";
+
+import { useUser } from "../../context/UserContext";
 
 const PasswordManager = () => {
+  const { user ,visible, setVisible} = useUser();
   const [showPassword, setShowPassword] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [formData, setFormData] = useState({
-    url: '',
-    name: '',
-    username: '',
-    password: '',
-    notes: '',
-    folder: ''
+    url: "",
+    name: "",
+    username: "",
+    password: "",
+    owneremail: user.email,
   });
+  const filteredUrls = formData.url
+    ? urls.filter((url) =>
+        url.name.toLowerCase().includes(formData.url.toLowerCase())
+      )
+    : [];
+  console.log("visibleee",visible);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setShowDropdown(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+
+    try {
+      const response = await axios.post("/api/savepasswords", { formData });
+      setFormData((prev) => ({
+        ...prev,
+        name: "",
+        url: "",
+        username: "",
+        password: "",
+      }));
+      if (response.status === 200) {
+        alert("Data inserted");
+      }
+      console.log(response);
+      console.log("Form submitted:", formData);
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        alert("Data already exists");
+      } else {
+        alert(error.response?.data?.message || "Something went wrong");
+      }
+    }
   };
 
   return (
-    <div style={{border: "var(--border)"}} className="bg-white shadow-lg rounded-lg max-w-4xl mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div
+      style={{ border: "var(--border)",display:visible?'block':'none' }}
+      className="bg-white shadow-lg rounded-lg max-w-4xl mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    >
       {/* Header */}
       <div className="bg-[#212121] border-2 text-[#b0b0b0] px-4 py-3 flex items-center justify-between rounded-t-lg">
         <div className="flex items-center space-x-2">
@@ -36,7 +73,7 @@ const PasswordManager = () => {
           <button className="hover:bg-red-700 p-1 rounded">
             <Maximize2 className="h-5 w-5" />
           </button>
-          <button  className="hover:bg-red-700 p-1 rounded">
+          <button className="hover:bg-red-700 p-1 rounded">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -46,7 +83,9 @@ const PasswordManager = () => {
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         {/* URL Field */}
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-gray-700">URL:</label>
+          <label className="block text-sm font-medium text-gray-700">
+            URL:
+          </label>
           <div className="flex">
             <input
               type="text"
@@ -62,14 +101,34 @@ const PasswordManager = () => {
               <ChevronDown className="h-5 w-5 text-gray-600" />
             </button>
           </div>
+          {showDropdown && formData.url && filteredUrls.length > 0 && (
+            <ul className="border max-h-60 overflow-y-auto">
+              {filteredUrls.map((url, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-center p-2 hover:bg-gray-100"
+                  onClick={() => {
+                    setFormData((prev) => ({ ...prev, url: url.url }));
+                    setShowDropdown(false);
+                  }}
+                >
+                  <img src={url.icon} alt="" className="w-5 h-5 mr-2" />
+                  {url.name}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Name Field */}
           <div className="space-y-1">
-            <label className="block text-sm font-medium text-gray-700">Name:</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Name:
+            </label>
             <input
+            placeholder="Instagram ,Google ,..."
               type="text"
               name="name"
               value={formData.name}
@@ -100,7 +159,9 @@ const PasswordManager = () => {
 
           {/* Username Field */}
           <div className="space-y-1">
-            <label className="block text-sm font-medium text-gray-700">Username:</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Username:
+            </label>
             <input
               type="text"
               name="username"
@@ -112,10 +173,12 @@ const PasswordManager = () => {
 
           {/* Password Field */}
           <div className="space-y-1">
-            <label className="block text-sm font-medium text-gray-700">Site password:</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Site password:
+            </label>
             <div className="relative">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -126,7 +189,11 @@ const PasswordManager = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
-                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
               </button>
             </div>
           </div>
@@ -145,18 +212,15 @@ const PasswordManager = () => {
         </div> */}
 
         {/* Advanced Settings */}
-      
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-4">
-          <button
-            type="button"
-            className="text-gray-600 hover:text-gray-800"
-          >
+          <button type="button" className="text-gray-600 hover:text-gray-800">
             <Star className="h-6 w-6" />
           </button>
           <div className="space-x-3">
             <button
+              onClick={()=>setVisible(false)}
               type="button"
               className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded"
             >

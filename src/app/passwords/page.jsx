@@ -3,11 +3,11 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import {  useState } from "react";
 import Password from "../components/modules/Password";
-
+import {useUser} from '../context/UserContext'
 export default function PasswordManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
-  const [visible, setVisible] = useState(null);
-
+  // const [visible, setVisible] = useState(null);
+ const { visible, setVisible} = useUser();
   return (
     <>
       <div
