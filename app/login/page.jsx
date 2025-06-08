@@ -42,7 +42,7 @@ const {setUser } = useUser();
           setEmail("");
           setPassword("");
           window.location.href = "/allitems";
-          
+          console.log(response)
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {

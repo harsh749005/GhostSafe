@@ -1,13 +1,41 @@
 "use client";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 import Password from "../components/modules/Password";
 import {useUser} from '../context/UserContext'
+import axios from "axios";
 export default function PasswordManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
   // const [visible, setVisible] = useState(null);
- const { visible, setVisible} = useUser();
+ const { user,visible, setVisible} = useUser();
+ const [data,setData] = useState([]);
+useEffect(() => {
+  async function fetchData() {
+    const userCookie = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('user='))
+      ?.split('=')[1];
+
+    if (userCookie) {
+      const user = JSON.parse(decodeURIComponent(userCookie));
+      console.log("User from cookie:", user);
+
+      try {
+        const response = await axios.get(`/api/fetchPasswordData?owneremail=${user.email}`);
+        setData(response.data.result);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    } else {
+      console.warn("User cookie not found");
+    }
+  }
+
+  fetchData(); // Call the function
+}, []);
+
+
   return (
     <>
       <div
@@ -65,7 +93,7 @@ export default function PasswordManager() {
 
               <div className="grid grid-cols-4 gap-4">
                 {/* Sample Items */}
-                {[...Array(2)].map((_, index) => (
+                {data.map((data, index) => (
                   <div
                     key={index}
                     onMouseLeave={() => setHoverIndex(null)}
@@ -82,9 +110,9 @@ export default function PasswordManager() {
                   </div> */}
                       <div>
                         <h4 className="font-medium text-lg text-[#B0B0B0]">
-                          Instagram
+                          {data.name}
                         </h4>
-                        <p className="text-sm text-[#B0B0B0]">harshpatel2641</p>
+                        <p className="text-sm text-[#B0B0B0]">{data.username}</p>
                       </div>
                     </div>
                     {hoveredIndex === index && (

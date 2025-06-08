@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import logo from "../../public/images/nature.png";
+import logo from "../public/images/nature.png";
 import Password from "./components/modules/Password";
 import Sidebar from "./components/Sidebar"
 import Navbar from "./components/Navbar"

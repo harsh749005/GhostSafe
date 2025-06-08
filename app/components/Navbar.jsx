@@ -11,10 +11,9 @@ export default function Navbar() {
       console.log(response);
       window.location.href = "/login";
     }
-    useEffect(()=>{
-
-      console.log(user);
-    },[user])
+    // useEffect(()=>{
+    //   console.log(user);
+    // },[user])
 
   return (
     <header

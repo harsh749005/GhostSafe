@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/page.jsx", "src/app/context/UserContext.tsx", "src/app/layout.tsx", "src/app/components/modules/Password.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/page.jsx", "src/app/context/UserContext.tsx", "src/app/layout.tsx", "src/app/components/modules/Password.jsx", "middleware.js"],
   "exclude": ["node_modules"]
 }
