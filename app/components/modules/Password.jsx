@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, X, Maximize2, Eye, EyeOff, ChevronDown } from "lucide-react";
 
 import { urls } from "../urls";
@@ -6,10 +6,27 @@ import axios from "axios";
 
 import { useUser } from "../../context/UserContext";
 
-const PasswordManager = () => {
-  const { user ,visible, setVisible} = useUser();
+const PasswordManager = ({ refreshData, modelData }) => {
+  const { user, visible, setVisible } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
+  console.log(user.email);
+  useEffect(() => {
+    if (modelData.length > 0 && user?.email) {
+      setIsEditing(true);
+      setFormData({
+        url: modelData[0].url,
+        name: modelData[0].name,
+        username: modelData[0].username,
+        password: modelData[0].password,
+        owneremail: user.email,
+      });
+      setEditId(modelData[0].id);
+    }
+  }, [modelData, user]);
+
   const [formData, setFormData] = useState({
     url: "",
     name: "",
@@ -17,12 +34,12 @@ const PasswordManager = () => {
     password: "",
     owneremail: user.email,
   });
+  // console.log(modelData)
   const filteredUrls = formData.url
     ? urls.filter((url) =>
         url.name.toLowerCase().includes(formData.url.toLowerCase())
       )
     : [];
-  console.log("visibleee",visible);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,25 +49,54 @@ const PasswordManager = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData);
 
-    try {
-      const response = await axios.post("/api/savepasswords", { formData });
-      setFormData((prev) => ({
-        ...prev,
-        name: "",
-        url: "",
-        username: "",
-        password: "",
-      }));
-      if (response.status === 200) {
-        alert("Data inserted");
+    if (!isEditing) {
+      console.log(formData);
+      try {
+        const response = await axios.post("/api/passwords/savepasswords", {
+          formData,
+        });
+        setFormData((prev) => ({
+          ...prev,
+          name: "",
+          url: "",
+          username: "",
+          password: "",
+        }));
+        if (response.status === 200) {
+          alert("Data inserted");
+          refreshData();
+        }
+        console.log(response);
+        console.log("Form submitted:", formData);
+      } catch (error) {
+        if (error.response && error.response.status === 409) {
+          alert("Data already exists");
+        } else {
+          alert(error.response?.data?.message || "Something went wrong");
+        }
       }
-      console.log(response);
-      console.log("Form submitted:", formData);
-    } catch (error) {
-      if (error.response && error.response.status === 409) {
-        alert("Data already exists");
-      } else {
+    } else {
+      try {
+        const response = await axios.put("/api/passwords/editpasswords", {
+          id: editId,
+          ...formData,
+        });
+        setFormData((prev) => ({
+          ...prev,
+          name: "",
+          url: "",
+          username: "",
+          password: "",
+        }));
+        if (response.status === 200) {
+          alert("Updated Successfully");
+          refreshData();
+        }
+        console.log(response);
+        console.log("Form submitted:", formData);
+      } catch (error) {
         alert(error.response?.data?.message || "Something went wrong");
       }
     }
@@ -58,7 +104,7 @@ const PasswordManager = () => {
 
   return (
     <div
-      style={{ border: "var(--border)",display:visible?'block':'none' }}
+      style={{ border: "var(--border)", display: visible ? "block" : "none" }}
       className="bg-white shadow-lg rounded-lg max-w-4xl mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       {/* Header */}
@@ -128,7 +174,7 @@ const PasswordManager = () => {
               Name:
             </label>
             <input
-            placeholder="Instagram ,Google ,..."
+              placeholder="Instagram ,Google ,..."
               type="text"
               name="name"
               value={formData.name}
@@ -136,26 +182,6 @@ const PasswordManager = () => {
               className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
-
-          {/* Folder Field */}
-          {/* <div className="space-y-1">
-            <label className="block text-sm font-medium text-gray-700">Folder:</label>
-            <div className="flex">
-              <input
-                type="text"
-                name="folder"
-                value={formData.folder}
-                onChange={handleChange}
-                className="flex-1 border border-gray-300 rounded-l px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-              <button
-                type="button"
-                className="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r hover:bg-gray-200"
-              >
-                <ChevronDown className="h-5 w-5 text-gray-600" />
-              </button>
-            </div>
-          </div> */}
 
           {/* Username Field */}
           <div className="space-y-1">
@@ -220,18 +246,47 @@ const PasswordManager = () => {
           </button>
           <div className="space-x-3">
             <button
-              onClick={()=>setVisible(false)}
+              onClick={() => setVisible(false)}
               type="button"
               className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded"
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="px-4 py-2 text-white bg-blue-500 cursor-pointer hover:bg-blue-600 rounded"
-            >
-              Save
-            </button>
+            {isEditing ? (
+              <button
+                onClick={() =>
+                  setTimeout(() => {
+                    setFormData({
+                      name: modelData.name,
+                      username: modelData.username,
+                      password: modelData.password,
+                      url: modelData.url,
+                      owneremail: modelData.email,
+                    });
+                    setEditId(modelData.id);
+                    refreshData();
+                    setVisible(false);
+                  }, 2000)
+                }
+                type="submit"
+                className="px-4 py-2 text-white bg-blue-600 cursor-pointer hover:bg-blue-500 rounded"
+              >
+                Edit
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setTimeout(() => {
+                    refreshData();
+                    setVisible(false);
+                  }, 2000);
+                }}
+                type="submit"
+                className="px-4 py-2 text-white bg-green-600  cursor-pointer hover:bg-green-500 rounded"
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
       </form>
