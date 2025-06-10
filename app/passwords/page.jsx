@@ -9,9 +9,11 @@ export default function PasswordManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
   // const [visible, setVisible] = useState(null);
  const { user,visible, setVisible} = useUser();
+ const [loding,setLoding] = useState(false);
  const [data,setData] = useState([]);
 useEffect(() => {
   async function fetchData() {
+    setLoding(true);
     const userCookie = document.cookie
       .split('; ')
       .find(row => row.startsWith('user='))
@@ -26,9 +28,12 @@ useEffect(() => {
         setData(response.data.result);
       } catch (err) {
         console.error("Error fetching data:", err);
+      }finally {
+        setLoding(false); // Stop loading (in both success or error)
       }
     } else {
       console.warn("User cookie not found");
+      setLoding(false);
     }
   }
 
@@ -92,8 +97,11 @@ useEffect(() => {
               </div>
 
               <div className="grid grid-cols-4 gap-4">
+             
                 {/* Sample Items */}
-                {data.map((data, index) => (
+                {
+                !loding ? 
+                data.map((data, index) => (
                   <div
                     key={index}
                     onMouseLeave={() => setHoverIndex(null)}
@@ -128,7 +136,11 @@ useEffect(() => {
                       </div>
                     )}
                   </div>
-                ))}
+                )
+                )
+                :<h1 className="text-gray-500 font-medium ">Loding...</h1>
+
+                }
               </div>
             </div>
           </main>
