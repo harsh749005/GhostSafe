@@ -3,7 +3,7 @@ import { jwtVerify } from "jose";
 
 export async function middleware(request) {
   const token = request.cookies.get("token")?.value;
-
+console.log(token);
   if (!token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
@@ -22,8 +22,9 @@ export async function middleware(request) {
 
     return response;
   } catch (err) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  console.error("Auth Middleware Error:", err); // ✅ now it's used
+  return NextResponse.redirect(new URL("/login", request.url));
+}
 }
 
 export const config = {
