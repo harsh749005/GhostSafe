@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 // Ideally move secret to .env
-const JWT_SECRET = "shshsh";
+const JWT_SECRET =  process.env.JWT_SECRET;
 
 export async function POST(req) {
     const body = await req.json();
@@ -34,7 +34,7 @@ export async function POST(req) {
         // Set HttpOnly cookie
         response.cookies.set("token", token, {
             httpOnly: true,
-            // secure: process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === "production",
             maxAge: 60 * 60 * 24 * 7, // 7 days
             path: "/"
         });
