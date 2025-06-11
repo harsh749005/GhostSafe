@@ -11,7 +11,7 @@ export default function PasswordManager() {
   const { user, visible, setVisible } = useUser();
   const [loding, setLoding] = useState(false);
   const [data, setData] = useState([]);
-  const [mdata, setMdata] = useState([]);
+  const [mdata, setMdata] = useState([]);  //data from model Passwords ,no request made 
 
   const fetchData = async () => {
     setLoding(true);
