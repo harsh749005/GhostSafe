@@ -1,46 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, X, ChevronDown } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 import axios, { isAxiosError } from "axios";
 
-const SecureNote = () => {
+const SecureNote = ({ refreshData, modelData }) => {
   const { user, visible, setVisible } = useUser();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
+  useEffect(() => {
+    if (modelData.length > 0 && user?.email) {
+      setIsEditing(true);
+      setFormData({
+        name: modelData[0].name,
+        notes: modelData[0].notes,
+        owneremail: user.email,
+      });
+      setEditId(modelData[0].id);
+    }
+  }, [modelData, user]);
   const [formData, setFormData] = useState({
     name: "",
     notes: "",
     owneremail: user?.email,
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
 
-    try{
-
-      const response = await axios.post("/api/notes/savenotes",{formData});
-      console.log(response);
-      if (response.status === 200) {
-        alert("Notes Stored");
+    if (!isEditing) {
+      try {
+        const response = await axios.post("/api/notes/savenotes", { formData });
+        console.log(response);
+        if (response.status === 200) {
+          alert("Notes Stored");
+        }
+      } catch (error) {
+        if (isAxiosError(error)) {
+          if (error.response && error.response.status === 409) {
+            alert("Data already exists");
+          } else {
+            alert(error.response?.data?.message || "Something went wrong");
+          }
+        }
       }
-    }catch (error) {
-      if(isAxiosError(error)){
-
-        if (error.response && error.response.status === 409) {
-          alert("Data already exists");
-        } else {
+    } else {
+      try {
+        const response = await axios.put("/api/notes/editnotes", {
+          id: editId,
+          ...formData,
+        });
+        setFormData((prev) => ({
+          ...prev,
+          name: "",
+          notes: "",
+        }));
+        if (response.status === 200) {
+          alert("Updated Successfully");
+          refreshData();
+        }
+        console.log(response);
+        console.log("Form submitted:", formData);
+      } catch (error) {
+        if (isAxiosError(error)) {
           alert(error.response?.data?.message || "Something went wrong");
         }
-        }
       }
-
-
+    }
   };
 
   return (
@@ -125,16 +156,43 @@ const SecureNote = () => {
                 <button
                   onClick={() => setVisible(false)}
                   type="button"
-                  className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded"
+                  className="px-4 py-2 text-gray-700 cursor-pointer bg-gray-100 hover:bg-gray-200 rounded"
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-white bg-blue-500 cursor-pointer hover:bg-blue-600 rounded"
-                >
-                  Save
-                </button>
+
+                {isEditing ? (
+                  <button
+                    onClick={() =>
+                      setTimeout(() => {
+                        setFormData({
+                          name: modelData.name,
+                          owneremail: modelData.email,
+                        });
+                        setEditId(modelData.id);
+                        refreshData();
+                        setVisible(false);
+                      }, 2000)
+                    }
+                    type="submit"
+                    className="px-4 py-2 text-white bg-blue-600 cursor-pointer hover:bg-blue-500 rounded"
+                  >
+                    Edit
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setTimeout(() => {
+                        refreshData();
+                        setVisible(false);
+                      }, 2000);
+                    }}
+                    type="submit"
+                    className="px-4 py-2 text-white bg-blue-500 cursor-pointer hover:bg-blue-600 rounded"
+                  >
+                    Save
+                  </button>
+                )}
               </div>
             </div>
           </form>
