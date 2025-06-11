@@ -41,7 +41,7 @@ export default function Sidebar() {
     // { id: "security", label: "Security Dashboard", icon: "🛡️" },
     // { id: "emergency", label: "Emergency Access", icon: "🚨" },
     {
-      id: "settings",
+      id: "settingspage",
       label: "Account Settings",
       icon: "⚙️",
       img: "/images/settings-4-fill.svg",
