@@ -48,7 +48,7 @@ export default function PasswordManager() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `api/passwords/detelepasswords?id=${id}`
+        `api/passwords/deletepasswords?id=${id}`
       );
       setData((prev) => prev.filter((data) => data.id !== id));
       if (response) {
