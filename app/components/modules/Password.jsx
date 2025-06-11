@@ -12,7 +12,6 @@ const PasswordManager = ({ refreshData, modelData }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
-  console.log(user.email);
   useEffect(() => {
     if (modelData.length > 0 && user?.email) {
       setIsEditing(true);
