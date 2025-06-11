@@ -3,10 +3,12 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import {  useState } from "react";
 import Notes from "../components/modules/Notes";
+import { useUser } from "../context/UserContext";
 
 export default function NotesManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
-  const [visible, setVisible] = useState(null);
+   const { user, visible, setVisible } = useUser();
+
 
   return (
     <>
