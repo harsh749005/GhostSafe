@@ -1,12 +1,48 @@
 "use client";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import Address from "../components/modules/Address";
+import axios from "axios";
 
 export default function AddressManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
   const [visible, setVisible] = useState(null);
+  const [loding, setLoding] = useState(false);
+  const [data, setData] = useState([]);
+  const [mdata, setMdata] = useState([]);  //data from model Address ,no request made to fetch data when edit request is made
+
+    const fetchData = async () => {
+    setLoding(true);
+    const userCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("user="))
+      ?.split("=")[1];
+
+    if (userCookie) {
+      const user = JSON.parse(decodeURIComponent(userCookie));
+      console.log("User from cookie:", user);
+
+      try {
+        const response = await axios.get(
+          `/api/address/fetchAddress?owneremail=${user.email}`
+        );
+        setData(response.data.result);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setTimeout(() => {
+          setLoding(false); // Stop loading (in both success or error)
+        }, 1000);
+      }
+    } else {
+      console.warn("User cookie not found");
+      setLoding(false);
+    }
+  };
+  useEffect(() => {
+    fetchData(); // Call the function
+  }, []);
 
   return (
     <>
@@ -65,7 +101,7 @@ export default function AddressManager() {
 
               <div className="grid grid-cols-4 gap-4">
                 {/* Sample Items */}
-                {[...Array(2)].map((_, index) => (
+                {data.map((data, index) => (
                   <div
                     key={index}
                     onMouseLeave={() => setHoverIndex(null)}
@@ -82,9 +118,9 @@ export default function AddressManager() {
                   </div> */}
                       <div>
                         <h4 className="font-medium text-lg text-[#B0B0B0]">
-                          Instagram
+                          {data.name}
                         </h4>
-                        <p className="text-sm text-[#B0B0B0]">harshpatel2641</p>
+                        <p className="text-sm text-[#B0B0B0]">{data.username}</p>
                       </div>
                     </div>
                     {hoveredIndex === index && (
