@@ -4,11 +4,10 @@ import { useUser } from "../../context/UserContext";
 import axios, { isAxiosError } from "axios";
 
 const SecureNote = ({ refreshData, modelData }) => {
-  const { user, visible, setVisible } = useUser();
-  const [isEditing, setIsEditing] = useState(false);
+  const { user, visible, setVisible, isEditing, setIsEditing } = useUser();
   const [editId, setEditId] = useState(null);
   useEffect(() => {
-    if (modelData.length > 0 && user?.email) {
+    if (modelData.length > 0 && user?.email && isEditing) {
       setIsEditing(true);
       setFormData({
         name: modelData[0].name,
@@ -18,6 +17,8 @@ const SecureNote = ({ refreshData, modelData }) => {
       setEditId(modelData[0].id);
     }
   }, [modelData, user]);
+
+  
   const [formData, setFormData] = useState({
     name: "",
     notes: "",
@@ -36,7 +37,11 @@ const SecureNote = ({ refreshData, modelData }) => {
     if (!isEditing) {
       try {
         const response = await axios.post("/api/notes/savenotes", { formData });
-        console.log(response);
+        setFormData((prev) => ({
+          ...prev,
+          name: "",
+          notes: "",
+        }));
         if (response.status === 200) {
           alert("Notes Stored");
         }
@@ -72,6 +77,13 @@ const SecureNote = ({ refreshData, modelData }) => {
         }
       }
     }
+  };
+
+  const emptyForm = () => {
+    setFormData({
+      name: "",
+      notes: "",
+    });
   };
 
   return (
@@ -154,7 +166,12 @@ const SecureNote = ({ refreshData, modelData }) => {
               </div>
               <div className="space-x-3">
                 <button
-                  onClick={() => setVisible(false)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setVisible(false);
+                    setIsEditing(false);
+                    emptyForm();
+                  }}
                   type="button"
                   className="px-4 py-2 text-gray-700 cursor-pointer bg-gray-100 hover:bg-gray-200 rounded"
                 >

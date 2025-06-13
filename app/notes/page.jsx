@@ -8,7 +8,7 @@ import axios from "axios";
 
 export default function NotesManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
-  const { user, visible, setVisible } = useUser();
+  const { user, visible, setVisible,isEditing, setIsEditing } = useUser();
   const [loding, setLoding] = useState(false);
   const [data, setData] = useState([]);
    const [mdata, setMdata] = useState([]);   // data is from Notes model , not from api 
@@ -162,6 +162,7 @@ export default function NotesManager() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
+                                setIsEditing(true);
                                 setVisible(true);
                                 handleEdit(data.id);
                               }}
@@ -194,7 +195,10 @@ export default function NotesManager() {
         </div>
         {/* Add Button */}
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEditing(false);
+            alert(isEditing);
             setVisible(true);
           }}
           className="fixed cursor-pointer bottom-6 right-6 w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:bg-red-600 transition"
