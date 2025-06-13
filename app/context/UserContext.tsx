@@ -11,19 +11,24 @@ interface UserContextType {
   setUser: (user: User | null) => void;
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  isEditing: boolean,
+  setIsEditing:(isEditing:boolean) => void;
 }
 
 const UserContext = createContext<UserContextType>({
   user: null,
   setUser: () => {},
   visible:false,
-  setVisible : () =>{}
+  setVisible : () =>{},
+  isEditing:false,
+  setIsEditing:() =>{},
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
- const [visible, setVisible] = useState(false);
-
+  const [visible, setVisible] = useState(false);
+  const [isEditing,setIsEditing] = useState(false);
+  console.log("Context se hu",isEditing);
   // Load user from localStorage on mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -47,7 +52,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, visible, setVisible }}>
+    <UserContext.Provider value={{ user, setUser, visible, setVisible,isEditing,setIsEditing }}>
 
       {children}
     </UserContext.Provider>
