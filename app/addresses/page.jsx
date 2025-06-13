@@ -4,14 +4,15 @@ import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import Address from "../components/modules/Address";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 export default function AddressManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
-  const [visible, setVisible] = useState(null);
+  const { user, visible, setVisible,isEditing, setIsEditing } = useUser();
   const [loding, setLoding] = useState(false);
   const [data, setData] = useState([]);
   const [mdata, setMdata] = useState([]);  //data from model Address ,no request made to fetch data when edit request is made
-
+  
     const fetchData = async () => {
     setLoding(true);
     const userCookie = document.cookie
@@ -44,6 +45,30 @@ export default function AddressManager() {
     fetchData(); // Call the function
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `api/address/deleteAddress?id=${id}`
+      );
+      setData((prev) => prev.filter((data) => data.id !== id));
+      if (response) {
+        alert("deleted");
+      }
+    } catch (err) {
+      console.error("Error deleting item:", err);
+    }
+  };
+
+  
+  const handleEdit = async (id) => {
+    try {
+      setMdata(data.filter((item) => item.id === id));
+
+    } catch (err) {
+      console.error("Error deleting item:", err);
+    }
+  };
+  
   return (
     <>
       <div
@@ -101,56 +126,84 @@ export default function AddressManager() {
 
               <div className="grid grid-cols-4 gap-4">
                 {/* Sample Items */}
-                {data.map((data, index) => (
-                  <div
-                    key={index}
-                    onMouseLeave={() => setHoverIndex(null)}
-                    onMouseEnter={() => setHoverIndex(index)}
-                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
-                  >
-                    <div className="flex items-center space-x-3">
-                      {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
-                    <img
-                      src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
-                      alt="Instagram"
-                      className="w-6 h-6"
-                    />
-                  </div> */}
-                      <div>
-                        <h4 className="font-medium text-lg text-[#B0B0B0]">
-                          {data.name}
-                        </h4>
-                        <p className="text-sm text-[#B0B0B0]">{data.username}</p>
-                      </div>
-                    </div>
-                    {hoveredIndex === index && (
-                      <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
-                        <div className="flex flex-col space-y-2">
-                          <button className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition">
-                            Edit
-                          </button>
-                          <button className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition">
-                            Delete
-                          </button>
+                { loding?(
+
+                <h1 className="text-gray-500 font-medium text-center py-4">
+                    Loding...
+                  </h1>
+                ):data.length === 0 ?(
+                                   <h1 className="text-gray-400 font-medium text-center py-4">
+                    No Address entries found.
+                  </h1> 
+                ):(
+
+                  data.map((data, index) => (
+                    <div
+                      key={index}
+                      onMouseLeave={() => setHoverIndex(null)}
+                      onMouseEnter={() => setHoverIndex(index)}
+                      className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                    >
+                      <div className="flex items-center space-x-3">
+                        {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
+                      <img
+                        src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
+                        alt="Instagram"
+                        className="w-6 h-6"
+                      />
+                    </div> */}
+                        <div>
+                          <h4 className="font-medium text-lg text-[#B0B0B0]">
+                            {data.name}
+                          </h4>
+                          <p className="text-sm text-[#B0B0B0]">{data.username}</p>
                         </div>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      {hoveredIndex === index && (
+                        <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
+                          <div className="flex flex-col space-y-2">
+                            <button 
+                                onClick={(e) => {
+                                e.stopPropagation();
+                                setIsEditing(true);
+                                setVisible(true);
+                                handleEdit(data.id);
+                              }}
+                            className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition">
+                              Edit
+                            </button>
+                            <button
+                                  onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDelete(data.id);
+                                }}
+                            className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition">
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )
+                }
               </div>
             </div>
           </main>
         </div>
         {/* Add Button */}
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEditing(false);
+            alert(isEditing);
             setVisible(true);
           }}
           className="fixed cursor-pointer bottom-6 right-6 w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:bg-red-600 transition"
         >
           +
         </button>
-        {visible && <Address />}
+        {visible && <Address refreshData={fetchData} modelData={mdata}/>}
       </div>
     </>
   );
