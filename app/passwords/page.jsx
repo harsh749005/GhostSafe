@@ -7,12 +7,12 @@ import { useUser } from "../context/UserContext";
 import axios from "axios";
 export default function PasswordManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
-  // const [visible, setVisible] = useState(null);
-  const { user, visible, setVisible } = useUser();
+  const { visible, setVisible,setIsEditing } = useUser();
   const [loding, setLoding] = useState(false);
   const [data, setData] = useState([]);
   const [mdata, setMdata] = useState([]);  //data from model Passwords ,no request made 
 
+  // FetchData Handler
   const fetchData = async () => {
     setLoding(true);
     const userCookie = document.cookie
@@ -44,7 +44,7 @@ export default function PasswordManager() {
   useEffect(() => {
     fetchData(); // Call the function
   }, []);
-
+  // Delete Handler
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
@@ -58,7 +58,7 @@ export default function PasswordManager() {
       console.error("Error deleting item:", err);
     }
   };
-
+  // Edit Handler 
   const handleEdit = async (id) => {
     try {
       setMdata(data.filter((item) => item.id === id));
@@ -165,6 +165,7 @@ export default function PasswordManager() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
+                                setIsEditing(true);
                                 setVisible(true);
                                 handleEdit(data.id);
                               }}
@@ -193,7 +194,9 @@ export default function PasswordManager() {
         </div>
         {/* Add Button */}
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEditing(false);
             setVisible(true);
           }}
           className="fixed cursor-pointer bottom-6 right-6 w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:bg-red-600 transition"
