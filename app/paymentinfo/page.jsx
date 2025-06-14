@@ -190,7 +190,7 @@ export default function PaymentInfoManager() {
                     </div>
                   ))
                 )}
-                )
+                
               </div>
             </div>
           </main>
