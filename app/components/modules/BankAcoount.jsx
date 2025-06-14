@@ -1,68 +1,145 @@
-import { useState } from "react";
+import { useEffect ,useState } from "react";
 import { Star, X, Maximize2, ChevronDown } from "lucide-react";
+import { useUser } from "../../context/UserContext";
 
-interface PaymentCardFormData {
-  name: string;
-  folder: string;
-  nameOnCard: string;
-  type: string;
-  number: string;
-  securityCode: string;
-  startDate: {
-    month: string;
-    year: string;
-  };
-  expirationDate: {
-    month: string;
-    year: string;
-  };
-  notes: string;
-}
+import axios from "axios";
+const BankAcoount = ({refreshData,modelData}) => {
+  const { user, visible, setVisible, isEditing, setIsEditing } = useUser();
+  const [editId, setEditId] = useState(null);
+  useEffect(() => {
+    if (modelData.length > 0 && user?.email && isEditing) {
+      setIsEditing(true);
+      const data = modelData[0];
+      setFormData({
+        name: data.name,
+        bankname: data.bankname,
+        type: data.type,
+        number:data.number,
+        swiftcode: data.swiftcode,
+        ibannumber: data.ibannumber,
+        branchname: data.branchname,
+        branchaddress: data.branchaddress,
+        pinnumber: data.pinnumber,
+        notes: data.notes,
+        owneremail: user.email,
+      });
+      setEditId(data.id);
+    }
+  }, [modelData, user]);
 
-const BankAcoount = () => {
-  const [formData, setFormData] = useState<PaymentCardFormData>({
+  const [formData, setFormData] = useState({
     name: "",
-    folder: "",
-    nameOnCard: "",
+    bankname: "",
     type: "",
     number: "",
-    securityCode: "",
-    startDate: {
-      month: "",
-      year: "",
-    },
-    expirationDate: {
-      month: "",
-      year: "",
-    },
+    swiftcode: "",
+    ibannumber: "",
+    branchname: "",
+    branchaddress: "",
+    pinnumber: "",
     notes: "",
+    owneremail:user.email
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.includes(".")) {
-      //   const [parent, child] = name.split('.');
-      //   setFormData(prev => ({
-      //     ...prev,
-      //     [parent]: {
-      //       ...prev[parent as keyof PaymentCardFormData],
-      //       [child]: value
-      //     }
-      //   }));
+      const [parent, child] = name.split(".");
+      setFormData((prev) => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: value,
+        },
+      }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+
+    if(!isEditing){
+
+      try {
+        const response = await axios.post("/api/bankAccount/storeBankAccount", {
+          formData,
+        });
+        setFormData((prev) => ({
+          ...prev,
+          name: "",
+          bankname: "",
+          type: "",
+          number: "",
+          swiftcode: "",
+          ibannumber: "",
+          branchname: "",
+          branchaddress: "",
+          pinnumber: "",
+          notes: "",
+          
+        }));
+        if (response.status === 200) {
+          alert("Data Stored");
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 409) {
+          alert("Data already exists");
+        } else {
+          alert(error.response?.data?.message || "Something went wrong");
+        }
+      }
+    }else{
+            try {
+        const response = await axios.put("/api/bankAccount/editBankAccount", {
+          id: editId,
+          ...formData,
+        });
+        setFormData((prev) => ({
+          ...prev,
+          name: "",
+          bankname: "",
+          type: "",
+          number: "",
+          swiftcode: "",
+          ibannumber: "",
+          branchname: "",
+          branchaddress: "",
+          pinnumber: "",
+          notes: "",
+        }));
+        if (response.status === 200) {
+          alert("Updated Successfully");
+          refreshData();
+        }
+        console.log(response);
+        console.log("Form submitted:", formData);
+      } catch (error) {
+        alert(error.response?.data?.message || "Something went wrong");
+      }
+    }
   };
 
+  const emptyForm = () =>{
+    setFormData({
+
+      ...prev,
+      name: "",
+      bankname: "",
+      type: "",
+      number: "",
+      swiftcode: "",
+      ibannumber: "",
+      branchname: "",
+      branchaddress: "",
+      pinnumber: "",
+      notes: "",
+      
+    }
+      );
+  }
   return (
     // <div
     //   className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -150,8 +227,8 @@ const BankAcoount = () => {
               </label>
               <input
                 type="text"
-                name="nameOnCard"
-                value={formData.nameOnCard}
+                name="bankname"
+                value={formData.bankname}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
@@ -192,8 +269,8 @@ const BankAcoount = () => {
               </label>
               <input
                 type="text"
-                name="securityCode"
-                value={formData.securityCode}
+                name="swiftcode"
+                value={formData.swiftcode}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
@@ -206,8 +283,8 @@ const BankAcoount = () => {
               </label>
               <input
                 type="text"
-                name="securityCode"
-                value={formData.securityCode}
+                name="ibannumber"
+                value={formData.ibannumber}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
@@ -220,8 +297,8 @@ const BankAcoount = () => {
               </label>
               <input
                 type="text"
-                name="securityCode"
-                value={formData.securityCode}
+                name="pinnumber"
+                value={formData.pinnumber}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
@@ -234,8 +311,8 @@ const BankAcoount = () => {
               </label>
               <input
                 type="text"
-                name="securityCode"
-                value={formData.securityCode}
+                name="branchaddress"
+                value={formData.branchaddress}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
@@ -247,8 +324,8 @@ const BankAcoount = () => {
               </label>
               <input
                 type="text"
-                name="securityCode"
-                value={formData.securityCode}
+                name="branchname"
+                value={formData.branchname}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
@@ -296,17 +373,62 @@ const BankAcoount = () => {
           </div>
           <div className="space-x-3">
             <button
+                    onClick={(e) => {
+                    e.stopPropagation();
+                    setVisible(false);
+                    setIsEditing(false);
+                    emptyForm();
+                  }}
               type="button"
               className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded"
             >
               Cancel
             </button>
+            {
+              isEditing ? (
+                  <button
+                    onClick={() =>
+                      setTimeout(() => {
+                        setFormData({
+                              name: modelData.name,
+    bankname: modelData.bankname,
+    type: modelData.type,
+    number: modelData.number,
+    swiftcode: modelData.swiftcode,
+    ibannumber: modelData.ibannumber,
+    branchname: modelData.branchname,
+    branchaddress: modelData.branchaddress,
+    pinnumber: modelData.pinnumber,
+    notes: modelData.notes,
+    // owneremail:user.email
+                         
+                        });
+                        setEditId(modelData.id);
+                        refreshData();
+                        setVisible(false);
+                      }, 2000)
+                    }
+                    type="submit"
+                    className="px-4 py-2 text-white bg-blue-600 cursor-pointer hover:bg-blue-500 rounded"
+                  >
+                    Edit
+                  </button>
+              ):(
+
             <button
+                    onClick={() => {
+                      setTimeout(() => {
+                        refreshData();
+                        setVisible(false);
+                      }, 2000);
+                    }}
               type="submit"
               className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded cursor-pointer"
             >
               Save
             </button>
+              )
+            }
           </div>
         </div>
       </form>

@@ -1,12 +1,75 @@
 "use client";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import {  useState } from "react";
+import {  useEffect,useState } from "react";
 import BankAcoount from "../components/modules/BankAcoount";
-
+import axios from "axios";
+import { useUser } from "../context/UserContext";
 export default function BankAccountManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
-  const [visible, setVisible] = useState(null);
+  const { user, visible, setVisible,isEditing, setIsEditing } = useUser();
+  const [loding, setLoding] = useState(false);
+  const [data, setData] = useState([]);
+  const [mdata, setMdata] = useState([]);  //data from model Address ,no request made to fetch data when edit request is made
+
+      const fetchData = async () => {
+    setLoding(true);
+    const userCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("user="))
+      ?.split("=")[1];
+
+    if (userCookie) {
+      const user = JSON.parse(decodeURIComponent(userCookie));
+      console.log("User from cookie:", user);
+
+      try {
+        const response = await axios.get(
+          `/api/bankAccount/fetchBankAccount?owneremail=${user.email}`
+        );
+        setData(response.data.result);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setTimeout(() => {
+          setLoding(false); // Stop loading (in both success or error)
+        }, 1000);
+      }
+    } else {
+      console.warn("User cookie not found");
+      setLoding(false);
+    }
+  };
+  useEffect(() => {
+    fetchData(); // Call the function
+  }, []);
+
+
+  
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `api/bankAccount/deleteBankAccount?id=${id}`
+      );
+      setData((prev) => prev.filter((data) => data.id !== id));
+      if (response) {
+        alert("deleted");
+      }
+    } catch (err) {
+      console.error("Error deleting item:", err);
+    }
+  };
+
+  
+  const handleEdit = async (id) => {
+    try {
+      setMdata(data.filter((item) => item.id === id));
+
+    } catch (err) {
+      console.error("Error deleting item:", err);
+    }
+  };
+  
 
   return (
     <>
@@ -65,7 +128,7 @@ export default function BankAccountManager() {
 
               <div className="grid grid-cols-4 gap-4">
                 {/* Sample Items */}
-                {[...Array(2)].map((_, index) => (
+                {data.map((data, index) => (
                   <div
                     key={index}
                     onMouseLeave={() => setHoverIndex(null)}
@@ -82,18 +145,30 @@ export default function BankAccountManager() {
                   </div> */}
                       <div>
                         <h4 className="font-medium text-lg text-[#B0B0B0]">
-                          Instagram
+                          {data.name}
                         </h4>
-                        <p className="text-sm text-[#B0B0B0]">harshpatel2641</p>
+                        <p className="text-sm text-[#B0B0B0]">{data.bankname}</p>
                       </div>
                     </div>
                     {hoveredIndex === index && (
                       <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
                         <div className="flex flex-col space-y-2">
-                          <button className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition">
+                          <button
+                                onClick={(e) => {
+                                e.stopPropagation();
+                                setIsEditing(true);
+                                setVisible(true);
+                                handleEdit(data.id);
+                              }}
+                          className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition">
                             Edit
                           </button>
-                          <button className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition">
+                          <button 
+                                  onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDelete(data.id);
+                                }}
+                          className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition">
                             Delete
                           </button>
                         </div>
@@ -114,7 +189,7 @@ export default function BankAccountManager() {
         >
           +
         </button>
-        {visible && <BankAcoount />}
+        {visible && <BankAcoount refreshData={fetchData} modelData={mdata}/>}
       </div>
     </>
   );
