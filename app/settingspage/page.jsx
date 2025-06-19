@@ -1,20 +1,51 @@
 "use client";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 import PaymentCard from "../components/modules/PaymentCard";
+import { useUser } from "../context/UserContext";
 
 export default function PaymentInfoManager() {
+
   const [hoveredIndex, setHoverIndex] = useState(null);
   const [visible, setVisible] = useState(null);
+  const {user} = useUser();
+  
 
-  const [firstName, setFirstName] = useState('Harsh');
-  const [lastName, setLastName] = useState('Patel');
+
+
+  // const [lastName, setLastName] = useState('Patel');
   const [email] = useState('patelharsh90541@gmail.com');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  const [firstName, setFirstName] = useState(user?.name || "");
+  useEffect(() => {
+    // This runs only on the client side
+    const userString = localStorage.getItem("user");
+    const userObject = userString ? JSON.parse(userString) : null;
+    console.log(userObject.name);
+    if (userObject?.name !==firstName ) {
+      setFirstName(userObject.name);
+    }else{
+      setFirstName(userObject.name);
+    }
+  }, []);
+
+
+const changeName = () =>{
+
+    const userString = localStorage.getItem("user");
+    const userObject = userString ? JSON.parse(userString) : {};
+
+    userObject.name = firstName;
+    console.log(userObject.name);
+    window.location.reload();
+  localStorage.setItem("user", JSON.stringify(userObject)); 
+
+}
 
   return (
     <>
@@ -62,7 +93,7 @@ export default function PaymentInfoManager() {
                 className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-500"
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block text-sm text-[#949494] mb-2 font-medium">Last name</label>
               <input
                 type="text"
@@ -70,10 +101,12 @@ export default function PaymentInfoManager() {
                 onChange={(e) => setLastName(e.target.value)}
                 className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-500"
               />
-            </div>
+            </div> */}
           </div>
           
-          <button className=" cursor-pointer font-medium bg-zinc-600 hover:bg-zinc-300 px-4 py-2 rounded text-sm transition-colors">
+          <button
+          onClick={changeName}
+          className=" cursor-pointer font-medium bg-zinc-600 hover:bg-zinc-300 px-4 py-2 rounded text-sm transition-colors">
             Save
           </button>
           
@@ -177,16 +210,8 @@ export default function PaymentInfoManager() {
             </div>
           </main>
         </div>
-        {/* Add Button */}
-        <button
-          onClick={() => {
-            setVisible(true);
-          }}
-          className="fixed cursor-pointer bottom-6 right-6 w-14 h-14 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:bg-red-600 transition"
-        >
-          +
-        </button>
-        {visible && <PaymentCard />}
+
+       
       </div>
     </>
   );
