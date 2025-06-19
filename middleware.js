@@ -28,5 +28,5 @@ console.log(token);
 }
 
 export const config = {
-  matcher: ["/allitems", "/passwords", "/notes","/address","/bankaccountinfo","/paymentinfo"],
+  matcher: ["/allitems", "/passwords", "/notes","/address","/bankaccountinfo","/paymentinfo","/settingspage"],
 };
