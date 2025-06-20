@@ -1,29 +1,49 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import logo from "../../public/images/nature.png";
-import Sidebar from "../components/Sidebar"
-import Navbar from "../components/Navbar" 
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import axios from "axios";
 function allitems() {
+  const [hoveredIndex, setHoverIndex] = useState(null);
+  const [password, setPasswords] = useState([]);
+  const [notes, setNotes] = useState([]);
+
+  const getNotes = async () => {
+    if (typeof window !== "undefined") {
+      const userString = localStorage.getItem("user");
+      const userObject = userString ? JSON.parse(userString) : null;
+      if (userObject) {
+        const email = userObject.email;
+        console.log(email);
+        const response = await axios.get(
+          `/api/allItems/fetchNotes?owneremail=${email}`
+        );
+        setNotes(response.data.notes);
+      }
+    }
+  };
+  useEffect(() => {
+    getNotes();
+  }, []);
 
  
-  const [hoveredIndex, setHoverIndex] = useState(null);
 
 
 
-  
+
   return (
-    <div 
+    <div
       className="min-h-screen flex relative"
       style={{ backgroundColor: "var(--background)" }}
     >
       {/* Sidebar */}
-      <Sidebar/>
-
+      <Sidebar />
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden">
         {/* Header */}
-       <Navbar/>
+        <Navbar />
 
         {/* Content */}
         <main className="p-6">
@@ -68,7 +88,7 @@ function allitems() {
 
             <div className="grid grid-cols-4 gap-4">
               {/* Sample Items */}
-              {[...Array(2)].map((_, index) => (
+              {notes.map((data, index) => (
                 <div
                   key={index}
                   onMouseLeave={() => setHoverIndex(null)}
@@ -84,13 +104,14 @@ function allitems() {
                     />
                   </div> */}
                     <div>
+                      <img src="/images/notes.svg" alt="notes" className="w-4 text-[#b0b0b0] " />
                       <h4 className="font-medium text-lg text-[#B0B0B0]">
-                        Instagram
+                        {data.name}
                       </h4>
-                      <p className="text-sm text-[#B0B0B0]">harshpatel2641</p>
+                      {/* <p className="text-sm text-[#B0B0B0]">harshpatel2641</p> */}
                     </div>
                   </div>
-                  {hoveredIndex === index && (
+                  {/* {hoveredIndex === index && (
                     <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
                       <div className="flex flex-col space-y-2">
                         <button className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition">
@@ -101,7 +122,7 @@ function allitems() {
                         </button>
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
               ))}
             </div>
