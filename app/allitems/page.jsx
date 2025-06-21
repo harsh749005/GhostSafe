@@ -26,7 +26,7 @@ function allitems() {
   const getNotes = async () => {
     if (cookie) {
       const user = JSON.parse(decodeURIComponent(cookie));
-      console.log("User from cookie:", user);
+      // console.log("User from cookie:", user);
       const response = await axios.get(
         `/api/notes/fetchnotes?owneremail=${user.email}`
       );
@@ -37,7 +37,7 @@ function allitems() {
   const getPasswords = async () => {
     if (cookie) {
       const user = JSON.parse(decodeURIComponent(cookie));
-      console.log("User from cookie:", user);
+      // console.log("User from cookie:", user);
       const response = await axios.get(
         `/api/passwords/fetchPasswordData?owneremail=${user.email}`
       );
@@ -48,7 +48,7 @@ function allitems() {
   const getAddress = async () => {
     if (cookie) {
       const user = JSON.parse(decodeURIComponent(cookie));
-      console.log("User from cookie:", user);
+      // console.log("User from cookie:", user);
       const response = await axios.get(
         `/api/address/fetchAddress?owneremail=${user.email}`
       );
