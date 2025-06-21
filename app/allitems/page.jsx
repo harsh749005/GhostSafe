@@ -5,32 +5,88 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 function allitems() {
+  const [cookie, setCookie] = useState("");
   const [hoveredIndex, setHoverIndex] = useState(null);
+  const [loding, setLoding] = useState(false);
   const [password, setPasswords] = useState([]);
   const [notes, setNotes] = useState([]);
+  const [address, setAddress] = useState([]);
+  const [paymentCards, setpaymentCards] = useState([]);
+  const [bankAccount, setBankAccount] = useState([]);
 
-  const getNotes = async () => {
-    if (typeof window !== "undefined") {
-      const userString = localStorage.getItem("user");
-      const userObject = userString ? JSON.parse(userString) : null;
-      if (userObject) {
-        const email = userObject.email;
-        console.log(email);
-        const response = await axios.get(
-          `/api/allItems/fetchNotes?owneremail=${email}`
-        );
-        setNotes(response.data.notes);
-      }
-    }
-  };
   useEffect(() => {
-    getNotes();
+    setLoding(true);
+    const userCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("user="))
+      ?.split("=")[1];
+    setCookie(userCookie || "");
   }, []);
 
- 
+  const getNotes = async () => {
+    if (cookie) {
+      const user = JSON.parse(decodeURIComponent(cookie));
+      console.log("User from cookie:", user);
+      const response = await axios.get(
+        `/api/notes/fetchnotes?owneremail=${user.email}`
+      );
+      setNotes(response.data.result);
+    }
+  };
 
+  const getPasswords = async () => {
+    if (cookie) {
+      const user = JSON.parse(decodeURIComponent(cookie));
+      console.log("User from cookie:", user);
+      const response = await axios.get(
+        `/api/passwords/fetchPasswordData?owneremail=${user.email}`
+      );
+      setPasswords(response.data.result);
+    }
+  };
 
+  const getAddress = async () => {
+    if (cookie) {
+      const user = JSON.parse(decodeURIComponent(cookie));
+      console.log("User from cookie:", user);
+      const response = await axios.get(
+        `/api/address/fetchAddress?owneremail=${user.email}`
+      );
+      setAddress(response.data.result);
+    }
+  };
 
+  const getPaymentCard = async () => {
+    if (cookie) {
+      const user = JSON.parse(decodeURIComponent(cookie));
+      // console.log("User from cookie:", user);
+      const response = await axios.get(
+        `/api/paymentCard/fetchPaymentCard?owneremail=${user.email}`
+      );
+      setpaymentCards(response.data.result);
+    }
+  };
+
+  const getBankAccount = async () => {
+    if (cookie) {
+      const user = JSON.parse(decodeURIComponent(cookie));
+      // console.log("User from cookie:", user);
+      const response = await axios.get(
+        `/api/bankAccount/fetchBankAccount?owneremail=${user.email}`
+      );
+      setLoding(false);
+
+      setBankAccount(response.data.result);
+    }
+  };
+
+  useEffect(() => {
+    getNotes();
+    getPasswords();
+    getAddress();
+    getPaymentCard();
+    getBankAccount();
+  }, [cookie]);
 
   return (
     <div
@@ -81,37 +137,43 @@ function allitems() {
             }}
             className=" rounded-lg shadow p-4"
           >
+            {/* Notes */}
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium text-[#B0B0B0] text-2xl">Social </h3>
+              <h3 className="font-medium text-[#B0B0B0] text-xl">Notes </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
-
-            <div className="grid grid-cols-4 gap-4">
-              {/* Sample Items */}
-              {notes.map((data, index) => (
-                <div
-                  key={index}
-                  onMouseLeave={() => setHoverIndex(null)}
-                  onMouseEnter={() => setHoverIndex(index)}
-                  className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
-                >
-                  <div className="flex items-center space-x-3">
-                    {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
-                    <img
-                      src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
-                      alt="Instagram"
-                      className="w-6 h-6"
-                    />
-                  </div> */}
-                    <div>
-                      <img src="/images/notes.svg" alt="notes" className="w-4 text-[#b0b0b0] " />
-                      <h4 className="font-medium text-lg text-[#B0B0B0]">
-                        {data.name}
-                      </h4>
-                      {/* <p className="text-sm text-[#B0B0B0]">harshpatel2641</p> */}
+            {loding ? (
+              <h1 className="text-gray-500 font-medium text-center py-4">
+                Loding...
+              </h1>
+            ) : notes.length === 0 ? (
+              <h1 className="text-gray-400 font-medium text-center py-4">
+                No Notes found.
+              </h1>
+            ) : (
+              <div className="grid grid-cols-4 gap-4">
+                {/* Sample Items */}
+                {notes.map((data, index) => (
+                  <div
+                    key={index}
+                    onMouseLeave={() => setHoverIndex(null)}
+                    onMouseEnter={() => setHoverIndex(index)}
+                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div>
+                        <img
+                          src="/images/notes.svg"
+                          alt="notes"
+                          className="w-4 text-[#b0b0b0] "
+                        />
+                        <h4 className="font-medium text-lg text-[#B0B0B0]">
+                          {data.name}
+                        </h4>
+                        {/* <p className="text-sm text-[#B0B0B0]">harshpatel2641</p> */}
+                      </div>
                     </div>
-                  </div>
-                  {/* {hoveredIndex === index && (
+                    {/* {hoveredIndex === index && (
                     <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
                       <div className="flex flex-col space-y-2">
                         <button className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition">
@@ -123,9 +185,287 @@ function allitems() {
                       </div>
                     </div>
                   )} */}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Passowrds */}
+            <div className="flex items-center justify-between mt-4 mb-4">
+              <h3 className="font-medium text-[#B0B0B0] text-xl">Passwords </h3>
+              {/* <span className="text-sm text-zinc-500">↓</span> */}
+            </div>
+            {loding ? (
+              <h1 className="text-gray-500 font-medium text-center py-4">
+                Loding...
+              </h1>
+            ) : password.length === 0 ? (
+              <h1 className="text-gray-400 font-medium text-center py-4">
+                No Passwords found.
+              </h1>
+            ) : (
+              <div className="grid grid-cols-4 gap-4">
+                {password.map((data, index) => (
+                  <div
+                    key={data.id || index}
+                    // onClick={() => console.log(data.id)}
+                    // onMouseLeave={() => setHoverIndex(null)}
+                    // onMouseEnter={() => setHoverIndex(index)}
+                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div>
+                        <h4 className="font-medium text-lg text-[#B0B0B0]">
+                          {data.name}
+                        </h4>
+                        <p className="text-sm text-[#B0B0B0]">
+                          {data.username}
+                        </p>
+                      </div>
+                    </div>
+                    {hoveredIndex === index && (
+                      <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
+                        <div className="flex flex-col space-y-2">
+                          {/* <button
+                          // onClick={(e) => {
+                          //   e.stopPropagation();
+                          //   setIsEditing(true);
+                          //   setVisible(true);
+                          //   handleEdit(data.id);
+                          // }}
+                          className=" cursor-pointer text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          // onClick={(e) => {
+                          //   e.stopPropagation();
+                          //   handleDelete(data.id);
+                          // }}
+                          className=" cursor-pointer text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition"
+                        >
+                          Delete
+                        </button> */}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Address */}
+            <div className="flex items-center justify-between mt-4 mb-4">
+              <h3 className="font-medium text-[#B0B0B0] text-xl">Address </h3>
+              {/* <span className="text-sm text-zinc-500">↓</span> */}
+            </div>
+            {loding ? (
+              <h1 className="text-gray-500 font-medium text-center py-4">
+                Loding...
+              </h1>
+            ) : address.length === 0 ? (
+              <h1 className="text-gray-400 font-medium text-center py-4">
+                No Address found.
+              </h1>
+            ) : (
+              <div className="grid grid-cols-4 gap-4">
+                {address.map((data, index) => (
+                  <div
+                    key={index}
+                    // onMouseLeave={() => setHoverIndex(null)}
+                    // onMouseEnter={() => setHoverIndex(index)}
+                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                  >
+                    <div className="flex items-center space-x-3">
+                      {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
+                      <img
+                        src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
+                        alt="Instagram"
+                        className="w-6 h-6"
+                      />
+                    </div> */}
+                      <div>
+                        <h4 className="font-medium text-lg text-[#B0B0B0]">
+                          {data.name}
+                        </h4>
+                        <p className="text-sm text-[#B0B0B0]">
+                          {data.username}
+                        </p>
+                      </div>
+                    </div>
+                    {hoveredIndex === index && (
+                      <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
+                        <div className="flex flex-col space-y-2">
+                          {/* <button
+                          //   onClick={(e) => {
+                          //   e.stopPropagation();
+                          //   setIsEditing(true);
+                          //   setVisible(true);
+                          //   handleEdit(data.id);
+                          // }}
+                          className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          //   onClick={(e) => {
+                          //   e.stopPropagation();
+                          //   handleDelete(data.id);
+                          // }}
+                          className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition"
+                        >
+                          Delete
+                        </button> */}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Payment Cards */}
+            <div className="flex items-center justify-between mt-4 mb-4">
+              <h3 className="font-medium text-[#B0B0B0] text-xl">
+                Payment Cards{" "}
+              </h3>
+              {/* <span className="text-sm text-zinc-500">↓</span> */}
+            </div>
+            {loding ? (
+              <h1 className="text-gray-500 font-medium text-center py-4">
+                Loding...
+              </h1>
+            ) : paymentCards.length === 0 ? (
+              <h1 className="text-gray-400 font-medium text-center py-4">
+                No Notes found.
+              </h1>
+            ) : (
+              <div className="grid grid-cols-4 gap-4">
+                {paymentCards.map((data, index) => (
+                  <div
+                    key={index}
+                    // onMouseLeave={() => setHoverIndex(null)}
+                    // onMouseEnter={() => setHoverIndex(index)}
+                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                  >
+                    <div className="flex items-center space-x-3">
+                      {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
+                        <img
+                          src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
+                          alt="Instagram"
+                          className="w-6 h-6"
+                        />
+                      </div> */}
+                      <div>
+                        <h4 className="font-medium text-lg text-[#B0B0B0]">
+                          {data.name}
+                        </h4>
+                        <p className="text-sm text-[#B0B0B0]">
+                          {data.nameoncard}
+                        </p>
+                        <p className="text-sm text-[#B0B0B0]">{data.number}</p>
+                      </div>
+                    </div>
+                    {hoveredIndex === index && (
+                      <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
+                        <div className="flex flex-col space-y-2">
+                          {/* <button
+                          // onClick={(e) => {
+                          //   e.stopPropagation();
+                          //   setIsEditing(true);
+                          //   setVisible(true);
+                          //   handleEdit(data.id);
+                          // }}
+                          className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          // onClick={(e) => {
+                          //   e.stopPropagation();
+                          //   handleDelete(data.id);
+                          // }}
+                          className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition"
+                        >
+                          Delete
+                        </button> */}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Bank Account */}
+            <div className="flex items-center justify-between mt-4 mb-4">
+              <h3 className="font-medium text-[#B0B0B0] text-xl">
+                Bank Account{" "}
+              </h3>
+              {/* <span className="text-sm text-zinc-500">↓</span> */}
+            </div>
+                        {loding ? (
+              <h1 className="text-gray-500 font-medium text-center py-4">
+                Loding...
+              </h1>
+            ) : bankAccount.length === 0 ? (
+              <h1 className="text-gray-400 font-medium text-center py-4">
+                No Notes found.
+              </h1>
+            ) :(
+            <div className="grid grid-cols-4 gap-4">
+              {bankAccount.map((data, index) => (
+                <div
+                  key={index}
+                  // onMouseLeave={() => setHoverIndex(null)}
+                  // onMouseEnter={() => setHoverIndex(index)}
+                  className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                >
+                  <div className="flex items-center space-x-3">
+                    {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
+                    <img
+                      src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
+                      alt="Instagram"
+                      className="w-6 h-6"
+                    />
+                  </div> */}
+                    <div>
+                      <h4 className="font-medium text-lg text-[#B0B0B0]">
+                        {data.name}
+                      </h4>
+                      <p className="text-sm text-[#B0B0B0]">{data.bankname}</p>
+                    </div>
+                  </div>
+                  {hoveredIndex === index && (
+                    <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
+                      <div className="flex flex-col space-y-2">
+                        {/* <button
+                              //   onClick={(e) => {
+                              //   e.stopPropagation();
+                              //   setIsEditing(true);
+                              //   setVisible(true);
+                              //   handleEdit(data.id);
+                              // }}
+                          className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition">
+                            Edit
+                          </button>
+                          <button 
+                                //   onClick={(e) => {
+                                //   e.stopPropagation();
+                                //   handleDelete(data.id);
+                                // }}
+                          className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition">
+                            Delete
+                          </button> */}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
+            )
+          }
+
           </div>
         </main>
       </div>
