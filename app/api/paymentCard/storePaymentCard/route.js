@@ -7,20 +7,20 @@ export async function POST(req) {
   const body = await req.json();
   const {
     name,
-    nameOnCard,
+    nameoncard,
     type,
     number,
-    securityCode,
-    startDate,
-    expirationDate,
+    securitycode,
+    startdate,
+    expirationdate,
     notes,
     owneremail,
   } = body.formData;
   console.log("Received Body : ", body);
-  const { month: startMonth, year: startYear } = startDate || {};
-  const { month: expirationMonth, year: expirationYear } = expirationDate || {};
+  const { month: startMonth, year: startYear } = startdate || {};
+  const { month: expirationMonth, year: expirationYear } = expirationdate || {};
 
-  if (!name || !nameOnCard || !owneremail || !startDate || !expirationDate) {
+  if (!name || !nameoncard || !owneremail || !startdate || !expirationdate) {
     return NextResponse.json(
       {
         status: "fail",
@@ -54,10 +54,10 @@ export async function POST(req) {
     const result = await sql`
   INSERT INTO ghostsafe_paymentcard (
     name,
-    nameOnCard,
+    nameoncard,
     type,
     number,
-    securityCode,
+    securitycode,
     startMonth,
     startYear,
     expirationMonth,
@@ -66,10 +66,10 @@ export async function POST(req) {
     owneremail
   ) VALUES (
     ${name},
-    ${nameOnCard},
+    ${nameoncard},
     ${type},
     ${number},
-    ${securityCode},
+    ${securitycode},
     ${startMonth},
     ${startYear},
     ${expirationMonth},
