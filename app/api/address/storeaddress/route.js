@@ -5,13 +5,12 @@ import { ensureDBReady } from "../../../lib/db";
 
 export async function POST(req) {
   const body = await req.json();
-
   const {
     name,
     title,
-    firstName,
-    middleName,
-    lastName,
+    firstname,
+    middlename,
+    lastname,
     username,
     birthday,
     gender,
@@ -19,6 +18,7 @@ export async function POST(req) {
     address1,
     address2,
     owneremail,
+    userkey
   } = body.formData;
 
   if (!name || !username || !owneremail) {
@@ -58,29 +58,31 @@ export async function POST(req) {
       INSERT INTO ghostsafe_address (
         name,
         title,
-        firstName,
-        middleName,
-        lastName,
+        firstname,
+        middlename,
+        lastname,
         username,
         gender,
         birthday,
         company,
         address1,
         address2,
-        owneremail
+        owneremail,
+        userkey
       ) VALUES (
         ${name},
         ${title},
-        ${firstName},
-        ${middleName},
-        ${lastName},
+        ${firstname},
+        ${middlename},
+        ${lastname},
         ${username},
         ${gender},
         ${fullBirthday},
         ${company},
         ${address1},
         ${address2},
-        ${owneremail}
+        ${owneremail},
+        ${userkey}
       )
     `;
     console.log(result);
