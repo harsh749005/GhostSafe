@@ -15,6 +15,7 @@ export async function POST(req) {
     expirationdate,
     notes,
     owneremail,
+    userkey
   } = body.formData;
   console.log("Received Body : ", body);
   const { month: startMonth, year: startYear } = startdate || {};
@@ -63,7 +64,8 @@ export async function POST(req) {
     expirationMonth,
     expirationYear,
     notes,
-    owneremail
+    owneremail,
+    userkey
   ) VALUES (
     ${name},
     ${nameoncard},
@@ -75,7 +77,8 @@ export async function POST(req) {
     ${expirationMonth},
     ${expirationYear},
     ${notes},
-    ${owneremail}
+    ${owneremail},
+    ${userkey}
   )
 `;
 

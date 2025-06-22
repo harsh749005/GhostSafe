@@ -30,6 +30,7 @@ const PaymentCard = ({ refreshData,modelData }) => {
         },
         notes: data.notes,
         owneremail: user.email,
+        userkey:user.userKey
       });
       setEditId(modelData[0].id);
     }
@@ -51,6 +52,7 @@ console.log(modelData)
     },
     notes: "",
     owneremail: user.email,
+    userkey:user.userKey
   });
 
   const handleChange = (e) => {
@@ -93,6 +95,7 @@ console.log(modelData)
           },
           notes: "",
           owneremail: user.email,
+          userkey:user.userKey
         }));
 
         const response = await axios.post("/api/paymentCard/storePaymentCard", {
@@ -117,6 +120,7 @@ console.log(modelData)
           },
           notes: "",
           owneremail: user.email,
+          userkey:user.userKey
         }));
 
         if (response.status === 200) {
@@ -153,6 +157,7 @@ console.log(modelData)
           },
           notes: "",
           owneremail: user.email,
+          userkey:user.userKey
         }));
         if (response.status === 200) {
           alert("Updated Successfully");
@@ -163,6 +168,7 @@ console.log(modelData)
       }
     }
   };
+
 
   const emptyForm = () => {
     setFormData({
@@ -181,8 +187,10 @@ console.log(modelData)
       },
       notes: "",
       owneremail: user.email || "",
+      userkey:user.userKey
     });
   };
+
 
   return (
     // <div
@@ -252,18 +260,6 @@ console.log(modelData)
                 </div>
               </div> */}
 
-                {/* Advanced Settings */}
-                <div>
-                  <button
-                    type="button"
-                    className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                    <span className="text-sm font-medium">
-                      Advanced Settings:
-                    </span>
-                  </button>
-                </div>
               </div>
 
               {/* Right Column - Card Details */}
