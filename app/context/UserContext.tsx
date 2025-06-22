@@ -28,26 +28,27 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
   const [visible, setVisible] = useState(false);
   const [isEditing,setIsEditing] = useState(false);
-  console.log("Context se hu",isEditing);
   // Load user from localStorage on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUserState(JSON.parse(storedUser));
-      } catch {
-        console.warn("Failed to parse stored user.");
-      }
+        const userCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("user="))
+      ?.split("=")[1];
+
+    if(userCookie) {
+      const parsedUser = JSON.parse(decodeURIComponent(userCookie));
+      setUserState(parsedUser);
     }
+
   }, []);
 
   // Function to update user and localStorage
   const setUser = (user: User | null) => {
     setUserState(user);
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      document.cookie = `user=${encodeURIComponent(JSON.stringify(user))}; path=/; max-age=${7 * 24 * 60 * 60}`;
     } else {
-      localStorage.removeItem("user");
+       document.cookie = "user=; path=/; max-age=0";
     }
   };
 
