@@ -18,8 +18,8 @@ export async function POST(req) {
     pinnumber,
     notes,
     owneremail,
+    userkey
   } = body.formData;
-  console.log("Received body:", body);
 
   if (!bankname || !name || !swiftcode || !ibannumber || !owneremail) {
     return NextResponse.json(
@@ -34,7 +34,7 @@ export async function POST(req) {
   try {
     await ensureDBReady();
 
-    await sql`INSERT INTO ghostsafe_bankaccount ( name,bankname,type,number,swiftcode,ibannumber,branchname,branchaddress,pinnumber,notes,owneremail) VALUES (${name},${bankname},${type}, ${number},${swiftcode},${ibannumber},${branchname},${branchaddress},${pinnumber},${notes}, ${owneremail})`;
+    await sql`INSERT INTO ghostsafe_bankaccount ( name,bankname,type,number,swiftcode,ibannumber,branchname,branchaddress,pinnumber,notes,owneremail,userkey) VALUES (${name},${bankname},${type}, ${number},${swiftcode},${ibannumber},${branchname},${branchaddress},${pinnumber},${notes}, ${owneremail},${userkey})`;
     
     return NextResponse.json(
       {

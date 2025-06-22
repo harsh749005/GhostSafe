@@ -22,6 +22,7 @@ const BankAcoount = ({refreshData,modelData}) => {
         pinnumber: data.pinnumber,
         notes: data.notes,
         owneremail: user.email,
+        userkey:user.userKey
       });
       setEditId(data.id);
     }
@@ -38,7 +39,8 @@ const BankAcoount = ({refreshData,modelData}) => {
     branchaddress: "",
     pinnumber: "",
     notes: "",
-    owneremail:user.email
+    owneremail:user.email,
+    userkey:user.userKey
   });
 
   const handleChange = (e) => {
@@ -59,7 +61,6 @@ const BankAcoount = ({refreshData,modelData}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
 
     if(!isEditing){
 
@@ -114,8 +115,7 @@ const BankAcoount = ({refreshData,modelData}) => {
           alert("Updated Successfully");
           refreshData();
         }
-        console.log(response);
-        console.log("Form submitted:", formData);
+
       } catch (error) {
         alert(error.response?.data?.message || "Something went wrong");
       }
