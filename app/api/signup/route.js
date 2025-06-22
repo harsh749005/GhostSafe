@@ -29,7 +29,7 @@ export async function POST(req) {
     const result = await sql `SELECT * FROM ghostsafe_user WHERE email=${email}`;
     const user = result[0];
     if (!user) {
-      await sql`INSERT INTO ghostsafe_user (name, email, password,userKey) VALUES (${username}, ${email}, ${hashedPassword},${userKey})`;
+      await sql`INSERT INTO ghostsafe_user (name, email, password,userkey) VALUES (${username}, ${email}, ${hashedPassword},${userKey})`;
       // console.log(result);
       return NextResponse.json({
         status: "success",
