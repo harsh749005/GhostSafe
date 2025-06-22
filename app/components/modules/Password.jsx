@@ -19,6 +19,7 @@ const PasswordManager = ({ refreshData, modelData }) => {
         username: modelData[0].username,
         password: modelData[0].password,
         owneremail: user.email,
+        userkey:user.userKey
       });
       setEditId(modelData[0].id);
     }
@@ -30,6 +31,7 @@ const PasswordManager = ({ refreshData, modelData }) => {
     username: "",
     password: "",
     owneremail: user.email,
+    userkey:user.userKey
   });
   // console.log(modelData)
   const filteredUrls = formData.url
@@ -280,6 +282,7 @@ const PasswordManager = ({ refreshData, modelData }) => {
                           password: modelData.password,
                           url: modelData.url,
                           owneremail: modelData.email,
+                          userkey:user.userKey
                         });
                         setEditId(modelData.id);
                         refreshData();

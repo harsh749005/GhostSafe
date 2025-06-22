@@ -7,7 +7,7 @@ import { useUser } from "../context/UserContext";
 import axios from "axios";
 export default function PasswordManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
-  const { visible, setVisible,setIsEditing } = useUser();
+  const { visible, setVisible,setIsEditing} = useUser();
   const [loding, setLoding] = useState(false);
   const [data, setData] = useState([]);
   const [mdata, setMdata] = useState([]);  //data from model Passwords ,no request made 
@@ -22,8 +22,6 @@ export default function PasswordManager() {
 
     if (userCookie) {
       const user = JSON.parse(decodeURIComponent(userCookie));
-      console.log("User from cookie:", user);
-
       try {
         const response = await axios.get(
           `/api/passwords/fetchPasswordData?owneremail=${user.email}`
