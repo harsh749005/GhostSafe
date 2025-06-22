@@ -14,6 +14,7 @@ export default function PaymentInfoManager() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
+  const [userKey,setUserKey] = useState(user?.userKey ||"");
 
   useEffect(() => {
     const userCookie = document.cookie
