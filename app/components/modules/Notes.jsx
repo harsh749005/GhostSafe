@@ -6,6 +6,7 @@ import axios, { isAxiosError } from "axios";
 const SecureNote = ({ refreshData, modelData }) => {
   const { user, visible, setVisible, isEditing, setIsEditing } = useUser();
   const [editId, setEditId] = useState(null);
+
   useEffect(() => {
     if (modelData.length > 0 && user?.email && isEditing) {
       setIsEditing(true);
@@ -13,6 +14,7 @@ const SecureNote = ({ refreshData, modelData }) => {
         name: modelData[0].name,
         notes: modelData[0].notes,
         owneremail: user.email,
+        userkey:user.userKey
       });
       setEditId(modelData[0].id);
     }
@@ -23,6 +25,7 @@ const SecureNote = ({ refreshData, modelData }) => {
     name: "",
     notes: "",
     owneremail: user?.email,
+    userkey:user.userKey
   });
 
   const handleChange = (e) => {
@@ -185,6 +188,7 @@ const SecureNote = ({ refreshData, modelData }) => {
                         setFormData({
                           name: modelData.name,
                           owneremail: modelData.email,
+                          userkey:modelData.userKey
                         });
                         setEditId(modelData.id);
                         refreshData();

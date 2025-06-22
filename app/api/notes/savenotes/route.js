@@ -7,7 +7,7 @@ import { ensureDBReady } from "../../../lib/db";
 export async function POST(req) {
   const body = await req.json();
 
-  const { name , notes , owneremail } = body.formData;
+  const { name , notes , owneremail ,userkey} = body.formData;
   // console.log("Received body:", body);
 
   if ( !name || !notes  || !owneremail) {
@@ -41,7 +41,7 @@ console.log("ha pass");
         );
       }
     
-    await sql`INSERT INTO ghostsafe_securenotes (name,notes,owneremail) VALUES (${name},${notes}, ${owneremail})`;
+    await sql`INSERT INTO ghostsafe_securenotes (name,notes,owneremail,userkey) VALUES (${name},${notes}, ${owneremail},${userkey})`;
     // console.log(result);
     return NextResponse.json(
       {
