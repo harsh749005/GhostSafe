@@ -25,7 +25,11 @@ export async function PUT(req) {
   
       await sql`UPDATE ghostsafe_user SET name = ${name}, email = ${email} WHERE id = ${id}`;
       await sql`UPDATE ghostsafe_passworddata SET  owneremail = ${email} WHERE userkey = ${userKey}`;
-  
+      await sql`UPDATE ghostsafe_paymentcard SET  owneremail = ${email} WHERE userkey = ${userKey}`;
+      await sql`UPDATE ghostsafe_address SET  owneremail = ${email} WHERE userkey = ${userKey}`;
+      await sql`UPDATE ghostsafe_bankaccount SET  owneremail = ${email} WHERE userkey = ${userKey}`;
+      await sql`UPDATE ghostsafe_securenotes SET  owneremail = ${email} WHERE userkey = ${userKey}`;
+
 
     const token = jwt.sign({ id, email, name,userKey }, JWT_SECRET, {
       expiresIn: "7d",
