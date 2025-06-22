@@ -20,7 +20,7 @@ export async function POST(req) {
         let numran = Math.floor(Math.random() * 10);
         key = key + str[strran] + special[specialran] + num[numran];
       }
-      return password;
+      return key;
     };
     const userKey = generateKey();
     const hashedPassword = await bcrypt.hash(password, 10); // 10 salt rounds
