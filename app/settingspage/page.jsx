@@ -7,49 +7,40 @@ import { useUser } from "../context/UserContext";
 import axios from "axios";
 
 export default function PaymentInfoManager() {
-  const [hoveredIndex, setHoverIndex] = useState(null);
-  const [visible, setVisible] = useState(null);
   const { user } = useUser();
-
-  // const [lastName, setLastName] = useState('Patel');
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
-  const [firstName, setFirstName] = useState(user?.name || "");
-  const [email,setEmail] = useState(user?.email || "");
-  useEffect(() => {
-    // This runs only on the client side
-    const userString = localStorage.getItem("user");
-    const userObject = userString ? JSON.parse(userString) : null;
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
 
-    if (userObject?.name !== firstName ||userObject?.email !== email ) {
-      setFirstName(userObject.name);
-      setEmail(userObject.email);
-    } else {
-      setFirstName(userObject.name);
-       setEmail(userObject.email);
+  useEffect(() => {
+    const userCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("user="))
+      ?.split("=")[1];
+
+    if (userCookie) {
+      const user = JSON.parse(decodeURIComponent(userCookie));
+      setName(user.name);
+      setEmail(user.email);
     }
   }, []);
 
   const changeName = async () => {
     const response = await axios.put("/api/profile/editData", {
-      name: firstName,
-      email:email
+      name: name,
+      email: email,
     });
-    console.log(response);
-    if(response.status === 200){
+    if (response.status === 200) {
       window.location.href = "/login";
     }
-    console.log(response);
     const userString = localStorage.getItem("user");
     const userObject = userString ? JSON.parse(userString) : {};
 
-    userObject.name = firstName;
+    userObject.name = name;
     userObject.email = email;
-    console.log(userObject.name);
-    console.log(userObject.email);
     window.location.reload();
     localStorage.setItem("user", JSON.stringify(userObject));
   };
@@ -61,12 +52,7 @@ export default function PaymentInfoManager() {
         style={{ backgroundColor: "var(--background)" }}
       >
         <Sidebar />
-        <div
-          className="flex-1 overflow-hidden"
-          onClick={() => {
-            setVisible(false);
-          }}
-        >
+        <div className="flex-1 overflow-hidden" onClick={() => {}}>
           <Navbar />
           {/* Content */}
           <main className="p-6">
@@ -98,8 +84,8 @@ export default function PaymentInfoManager() {
                     </label>
                     <input
                       type="text"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-500"
                     />
                   </div>
@@ -130,25 +116,24 @@ export default function PaymentInfoManager() {
                       Change email
                     </button> */}
                   </div>
-                  
-                                      <input
-                      type="text"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-zinc-500 focus:outline-none focus:border-zinc-500"
-                    />
-{/* 
+
+                  <input
+                    type="text"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-zinc-500 focus:outline-none focus:border-zinc-500"
+                  />
+                  {/* 
                   <div className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2  focus:outline-none focus:border-zinc-500">
                     {email}
                   </div> */}
-                  
-                  <button
-                  onClick={changeName}
-                  className="mt-5 cursor-pointer font-medium bg-zinc-600 hover:bg-zinc-300 px-4 py-2 rounded text-sm transition-colors"
-                >
-                  Save
-                </button>
 
+                  <button
+                    onClick={changeName}
+                    className="mt-5 cursor-pointer font-medium bg-zinc-600 hover:bg-zinc-300 px-4 py-2 rounded text-sm transition-colors"
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
 
@@ -187,7 +172,7 @@ export default function PaymentInfoManager() {
                   Set password
                 </h2>
 
-                <div className="space-y-4">
+                {/* <div className="space-y-4">
                   <div>
                     <label className="block text-sm text-[#949494]  mb-2 font-medium">
                       Password
@@ -279,7 +264,7 @@ export default function PaymentInfoManager() {
                   <button className="cursor-pointer bg-white hover:bg-zinc-400 px-6 py-2 rounded text-black font-medium transition-colors">
                     Set Password
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </main>
