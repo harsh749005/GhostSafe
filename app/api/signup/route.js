@@ -9,13 +9,27 @@ export async function POST(req) {
   const { username, email, password } = body;
 
   try {
+        const generateKey = () => {
+      let str = "QWERTYUIOPLKJHGFDSAZXCVBNM";
+      let special = "!@#$%^&*()";
+      let num = "1234567890";
+      let key = "";
+      for (let i = 0; i < 10; i++) {
+        let strran = Math.floor(Math.random() * 26);
+        let specialran = Math.floor(Math.random() * 10);
+        let numran = Math.floor(Math.random() * 10);
+        key = key + str[strran] + special[specialran] + num[numran];
+      }
+      return password;
+    };
+    const userKey = generateKey();
     const hashedPassword = await bcrypt.hash(password, 10); // 10 salt rounds
     await ensureDBReady();
     
     const result = await sql `SELECT * FROM ghostsafe_user WHERE email=${email}`;
     const user = result[0];
     if (!user) {
-      await sql`INSERT INTO ghostsafe_user (name, email, password) VALUES (${username}, ${email}, ${hashedPassword})`;
+      await sql`INSERT INTO ghostsafe_user (name, email, password,userKey) VALUES (${username}, ${email}, ${hashedPassword},${userKey})`;
       // console.log(result);
       return NextResponse.json({
         status: "success",
