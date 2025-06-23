@@ -67,16 +67,6 @@ LinkedIn : https://www.linkedin.com/in/harsh-patel-24a142223/
 
 GhostSafe – because your secrets deserve a vault. 
 
-```yaml
----
-
-Let me know if you'd like:
-- A version with badges (e.g., build status, tech stack)
-- Screenshot/image placeholders
-- Instructions for using Prisma or database setup
-
-I can also format this as a downloadable file for you.
-
 
 
 
