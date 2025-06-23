@@ -94,13 +94,7 @@ export default function NotesManager() {
               >
                 Notes
               </h2>
-              <div className="flex items-center space-x-2">
-                {/* <button className="p-2 hover:bg-zinc-100 rounded-lg">
-                <span className="text-zinc-600">🔍</span>
-              </button>
-              <button className="p-2 hover:bg-zinc-100 rounded-lg">
-                <span className="text-zinc-600">📋</span>
-              </button> */}
+              {/* <div className="flex items-center space-x-2">
                 <select
                   className="px-3 py-2  rounded-lg text-sm font-medium"
                   style={{
@@ -111,7 +105,7 @@ export default function NotesManager() {
                 >
                   <option>Folder (a-z)</option>
                 </select>
-              </div>
+              </div> */}
             </div>
 
             <div
