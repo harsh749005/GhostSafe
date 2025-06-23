@@ -139,7 +139,7 @@ export default function PaymentInfoManager() {
               </div>
 
               {/* Sign-in Methods Section */}
-              <div className=" border border-[#2e2e2e] rounded-lg p-6 m-[auto] w-[650px]">
+              {/* <div className=" border border-[#2e2e2e] rounded-lg p-6 m-[auto] w-[650px]">
                 <h2 className="text-xl font-medium mb-6 text-[#dedede]">
                   Sign-in methods
                 </h2>
@@ -165,15 +165,15 @@ export default function PaymentInfoManager() {
                     </svg>
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {/* Set Password Section */}
-              <div className="border border-[#2e2e2e] rounded-lg p-6 m-[auto] w-[650px]">
+              {/* <div className="border border-[#2e2e2e] rounded-lg p-6 m-[auto] w-[650px]">
                 <h2 className="text-xl font-medium mb-6 text-[#dedede]">
                   Set password
                 </h2>
 
-                {/* <div className="space-y-4">
+                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm text-[#949494]  mb-2 font-medium">
                       Password
@@ -265,8 +265,8 @@ export default function PaymentInfoManager() {
                   <button className="cursor-pointer bg-white hover:bg-zinc-400 px-6 py-2 rounded text-black font-medium transition-colors">
                     Set Password
                   </button>
-                </div> */}
-              </div>
+                </div> 
+              </div> */}
             </div>
           </main>
         </div>
