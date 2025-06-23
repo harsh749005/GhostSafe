@@ -122,14 +122,14 @@ const {setUser } = useUser();
                 required
               />
 
-              <div className="flex justify-end">
+              {/* <div className="flex justify-end">
                 <a
                   href="#"
                   className="text-blue-500 hover:text-blue-300 text-sm font-medium transition-colors"
                 >
                   Forgot Password?
                 </a>
-              </div>
+              </div> */}
 
               <button
                 type="submit"
