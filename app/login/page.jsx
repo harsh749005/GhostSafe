@@ -142,7 +142,7 @@ const {setUser } = useUser();
             {/* Sign up link */}
             <div className="mt-8 text-center">
               <p className="text-[#B0B0B0]">
-                New to Neon?{" "}
+                New to GhostSafe ?{" "}
                 <a
                   href="/signup"
                   className="text-blue-500 hover:text-blue-300 font-medium transition-colors"
