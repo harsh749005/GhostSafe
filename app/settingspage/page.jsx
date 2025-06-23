@@ -81,7 +81,7 @@ export default function PaymentInfoManager() {
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div>
                     <label className="block text-sm mb-2 text-[#949494] font-medium">
-                      First name
+                      Name
                     </label>
                     <input
                       type="text"
