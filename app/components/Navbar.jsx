@@ -26,7 +26,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between">
         <div className="flex items-center flex-1 max-w-2xl">
           <h1 className="text-[#dededb] text-xl font-bold mr-8">GhostSafe</h1>
-          <div className="flex-1 relative">
+          {/* <div className="flex-1 relative">
             <input
               type="text"
               placeholder="search my vault"
@@ -43,7 +43,7 @@ export default function Navbar() {
               src="/images/search-2-line.svg"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 w-4 h-4 "
             />
-          </div>
+          </div> */}
         </div>
         {/* Profile pic */}
         <div className="flex items-center space-x-4">
