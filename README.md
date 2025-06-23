@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 👻 GhostSafe  
 
-## Getting Started
+**GhostSafe** is a secure web application designed to store users' **confidential data** such as passwords, bank details, card information, and personal notes — all encrypted and protected by modern authentication practices.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+-  **JWT Authentication** – Secure user authentication and protected routes
+-  **Bcrypt Hashing** – Passwords are hashed before storage for enhanced security
+-  **Secure Cookies** – JWT tokens are stored in HTTP-only cookies to prevent XSS
+-  **Save and Manage:**
+  - Passwords
+  - Bank Details
+  - Card Details
+  - Personal Notes
+- **Responsive Design** – Smooth and clean UI with responsive layouts
+
+---
+
+## 🛠 Tech Stack
+
+| Tech          | Description                         |
+|---------------|-------------------------------------|
+| **Next.js**   | React-based framework for fullstack apps |
+| **Neon DB**   | Serverless Postgres database        |
+| **Prisma**    | Type-safe ORM for database access   |
+| **Bcrypt.js** | Password hashing                    |
+| **JWT**       | JSON Web Tokens for authentication  |
+| **TailwindCSS** | Utility-first styling framework  |
+
+---
+
+## 🔐 Security Practices
+
+- Passwords are **hashed using bcrypt** before storing in the database.
+- **JWTs** are stored in **HTTP-only cookies**, making them inaccessible to JavaScript.
+- Sensitive routes are **protected via token verification** middleware.
+- Input validation and sanitization to avoid common web vulnerabilities.
+
+---
+
+## 📸 Screenshots
+
+> _Add some screenshots here showing the dashboard, login, data entry pages, etc._
+
+---
+
+## ⚙️ Getting Started
+
+1. **Clone the repository**
 
 ```bash
+git clone https://github.com/your-username/ghostsafe.git
+cd ghostsafe
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+📦 Deployment
+You can deploy GhostSafe using Vercel for seamless Next.js hosting. Ensure environment variables are correctly set in the Vercel dashboard.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ Contact
+If you have feedback, feature requests, or just want to connect:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+GMail : patelharsh749005@gmail.com   
+LinkedIn : https://www.linkedin.com/in/harsh-patel-24a142223/
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+GhostSafe – because your secrets deserve a vault. 
 
-## Learn More
+```yaml
+---
 
-To learn more about Next.js, take a look at the following resources:
+Let me know if you'd like:
+- A version with badges (e.g., build status, tech stack)
+- Screenshot/image placeholders
+- Instructions for using Prisma or database setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+I can also format this as a downloadable file for you.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
