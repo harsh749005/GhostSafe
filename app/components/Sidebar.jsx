@@ -47,7 +47,7 @@ export default function Sidebar() {
       img: "/images/settings-4-fill.svg",
     },
     // { id: "advanced", label: "Advanced Options", icon: "🔧" },
-    { id: "help", label: "Help", icon: "❓", img: "/images/question-fill.svg" },
+    // { id: "help", label: "Help", icon: "❓", img: "/images/question-fill.svg" },
   ];
   return (
     <div
