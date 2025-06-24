@@ -1,10 +1,9 @@
 "use client";
-
-import { ArrowLeft } from "lucide-react";
-import SocialLoginButton from "../components/SocialLoginButton";
 import { useState } from "react";
 import InputField from "../components/InputField";
 import PasswordField from "../components/PasswordField";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 import axios from "axios";
 
 function Login() {
@@ -12,6 +11,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [progress, setProgress] = useState(false);
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,11 +36,14 @@ function Login() {
           email,
           password,
         });
-        alert(response.data.message);
-        window.location.href = "/login";
+        // alert(response.data.message);
+        setProgress(true);
         setEmail("");
         setPassword("");
         setUsername("");
+        setTimeout(()=>{
+          window.location.href = "/login";
+        },3000)
       } catch (error) {
         if (error.response && error.response.status === 409) {
           alert("User already exists");
@@ -127,7 +130,19 @@ function Login() {
                 type="submit"
                 className="cursor-pointer w-full border-1 border-[#2b2b2b] hover:bg-[#1f1f1f] text-[#B0B0B0] font-medium py-3 rounded-md transition-colors duration-200"
               >
-                Continue
+                {progress ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CircularProgress size="30px" />
+                  </Box>
+                ) : (
+                  "Continue"
+                )}
               </button>
             </form>
 

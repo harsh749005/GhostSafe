@@ -1,24 +1,18 @@
 "use client";
-import Logo from "../components/Logo";
-import { ArrowLeft } from "lucide-react";
-import SocialLoginButton from "../components/SocialLoginButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InputField from "../components/InputField";
 import PasswordField from "../components/PasswordField";
 import axios from "axios";
-import {useUser} from '../context/UserContext'
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
+import { useUser } from "../context/UserContext";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [progress,setProgress] = useState(false);
-
-
-const {setUser } = useUser();
-
+  const [progress, setProgress] = useState(false);
+  const { setUser } = useUser();
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,14 +37,17 @@ const {setUser } = useUser();
           password,
         });
         if (response.status === 200) {
-          setUser({name:response.data.user.name,email:response.data.user.email})
+          setUser({
+            name: response.data.user.name,
+            email: response.data.user.email,
+          });
           setEmail("");
           setPassword("");
           setProgress(true);
-          setTimeout(()=>{
+          setTimeout(() => {
             window.location.href = "/allitems";
-          },3000)
-          console.log(response)
+          }, 3000);
+          console.log(response);
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -63,12 +60,10 @@ const {setUser } = useUser();
       }
       console.log("Login with:", email, password);
     }
-
   };
   return (
     <>
       <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-
         {/* Left sidebar with logo and tagline */}
         <div className="hidden md:flex md:w-2/5 lg:w-1/3 flex-col bg-[#131313] p-10 justify-center items-center">
           {/* <div className="mb-8">
@@ -142,20 +137,21 @@ const {setUser } = useUser();
 
               <button
                 type="submit"
-                className="w-full border-1 border-[#2b2b2b] hover:bg-[#1f1f1f] text-[#B0B0B0] font-medium py-3 rounded-md transition-colors duration-200"
+                className="w-full border-1 cursor-pointer border-[#2b2b2b] hover:bg-[#1f1f1f] text-[#B0B0B0] font-medium py-3 rounded-md transition-colors duration-200"
               >
-                {
-                  progress ? (
-                        <Box sx={{ display: 'flex' ,justifyContent: 'center',
-    alignItems: 'center',
- }}>
-      <CircularProgress size="30px"/>
-    </Box>
-                  ):(
-"Log in"
-                  )
-                }
-                
+                {progress ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CircularProgress size="30px" />
+                  </Box>
+                ) : (
+                  "Log in"
+                )}
               </button>
             </form>
 
