@@ -1,20 +1,36 @@
 "use client";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import { useEffect, useState } from "react";
 import Password from "../components/modules/Password";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
+import { ToastContainer, toast } from "react-toastify";
 import { useUser } from "../context/UserContext";
-import axios from "axios";
+
 export default function PasswordManager() {
+  const notify = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: 1,
+      theme: "dark",
+    });
+  };
   const [hoveredIndex, setHoverIndex] = useState(null);
-  const { visible, setVisible,setIsEditing} = useUser();
-  const [loding, setLoding] = useState(false);
+  const { visible, setVisible, setIsEditing } = useUser();
+  const [loding, setLoding] = useState(true);
   const [data, setData] = useState([]);
-  const [mdata, setMdata] = useState([]);  //data from model Passwords ,no request made 
+  const [mdata, setMdata] = useState([]); //data from model Passwords ,no request made
+
 
   // FetchData Handler
   const fetchData = async () => {
-    setLoding(true);
     const userCookie = document.cookie
       .split("; ")
       .find((row) => row.startsWith("user="))
@@ -27,6 +43,9 @@ export default function PasswordManager() {
           `/api/passwords/fetchPasswordData?owneremail=${user.email}`
         );
         setData(response.data.result);
+        setTimeout(() => {
+          setLoding(false);
+        }, 3000);
       } catch (err) {
         console.error("Error fetching data:", err);
       } finally {
@@ -49,18 +68,19 @@ export default function PasswordManager() {
         `api/passwords/deletepasswords?id=${id}`
       );
       setData((prev) => prev.filter((data) => data.id !== id));
-      if (response) {
-        alert("deleted");
+      if (response.status === 200) {
+        
+        notify("Deleted");
       }
     } catch (err) {
       console.error("Error deleting item:", err);
     }
   };
-  // Edit Handler 
+  // Edit Handler
   const handleEdit = async (id) => {
     try {
       setMdata(data.filter((item) => item.id === id));
-      console.log("ha ho gyaa");
+      
     } catch (err) {
       console.error("Error deleting item:", err);
     }
@@ -112,15 +132,21 @@ export default function PasswordManager() {
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-medium text-[#B0B0B0] text-2xl">Social </h3>
-                {/* <span className="text-sm text-zinc-500">↓</span> */}
               </div>
 
               <div className="grid grid-cols-4 gap-4">
                 {/* Sample Items */}
                 {loding ? (
-                  <h1 className="text-gray-500 font-medium text-center py-4">
-                    Loding...
-                  </h1>
+                  data.map((item, index) => (
+                    <Stack key={item.id} spacing={1}>
+                      <Skeleton
+                        variant="rounded"
+                        width={"100%"}
+                        height={80}
+                        sx={{ backgroundColor: "#2a2a2a" }}
+                      />
+                    </Stack>
+                  ))
                 ) : data.length === 0 ? (
                   <h1 className="text-gray-400 font-medium text-center py-4">
                     No password entries found.
@@ -135,13 +161,6 @@ export default function PasswordManager() {
                       className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
                     >
                       <div className="flex items-center space-x-3">
-                        {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
-                    <img
-                      src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
-                      alt="Instagram"
-                      className="w-6 h-6"
-                    />
-                  </div> */}
                         <div>
                           <h4 className="font-medium text-lg text-[#B0B0B0]">
                             {data.name}
@@ -160,6 +179,7 @@ export default function PasswordManager() {
                                 setIsEditing(true);
                                 setVisible(true);
                                 handleEdit(data.id);
+                                
                               }}
                               className=" cursor-pointer text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition"
                             >
@@ -197,6 +217,7 @@ export default function PasswordManager() {
         </button>
         {visible && <Password refreshData={fetchData} modelData={mdata} />}
       </div>
+      <ToastContainer />
     </>
   );
 }

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Star, X, Maximize2, Eye, EyeOff, ChevronDown } from "lucide-react";
+import { Star, X, Eye, EyeOff, ChevronDown } from "lucide-react";
 import { urls } from "../urls";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 import { useUser } from "../../context/UserContext";
 
 const PasswordManager = ({ refreshData, modelData }) => {
@@ -9,6 +10,18 @@ const PasswordManager = ({ refreshData, modelData }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [editId, setEditId] = useState(null);
+    const notify = (message) => {
+      toast.success(message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 1,
+        theme: "dark",
+      });
+    };
   // This useEffect is used to add the fetch data to the state , data is fetched in password -> page.js
   useEffect(() => {
     if (modelData.length > 0 && user?.email && isEditing) {
@@ -48,7 +61,7 @@ const PasswordManager = ({ refreshData, modelData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    // console.log(formData);
 
     if (!isEditing) {
       console.log(formData);
@@ -65,8 +78,11 @@ const PasswordManager = ({ refreshData, modelData }) => {
           password: "",
         }));
         if (response.status === 200) {
-          alert("Data inserted");
-          refreshData();
+          notify("Data inserted");
+          setTimeout(()=>{
+            refreshData();
+
+          },2000)
         }
         console.log(response);
         console.log("Form submitted:", formData);
@@ -92,11 +108,13 @@ const PasswordManager = ({ refreshData, modelData }) => {
           password: "",
         }));
         if (response.status === 200) {
-          alert("Updated Successfully");
-          refreshData();
+          notify("Successfully Updated !");
+          setTimeout(()=>{
+            refreshData();
+          },2000)
         }
-        console.log(response);
-        console.log("Form submitted:", formData);
+        // console.log(response);
+        // console.log("Form submitted:", formData);
       } catch (error) {
         alert(error.response?.data?.message || "Something went wrong");
       }
@@ -128,11 +146,11 @@ const PasswordManager = ({ refreshData, modelData }) => {
               <h2 className="text-lg font-medium">Add password</h2>
             </div>
             <div className="flex items-center space-x-2">
-              <button className="hover:bg-red-700 p-1 rounded">
+              {/* <button className="hover:bg-red-700 p-1 rounded">
                 <Maximize2 className="h-5 w-5" />
-              </button>
+              </button> */}
               <button className="hover:bg-red-700 p-1 rounded">
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5" onClick={()=>setVisible(false)} />
               </button>
             </div>
           </div>
@@ -237,20 +255,6 @@ const PasswordManager = ({ refreshData, modelData }) => {
               </div>
             </div>
 
-            {/* Notes Field */}
-            {/* <div className="space-y-1">
-          <label className="block text-sm font-medium text-gray-700">Notes:</label>
-          <textarea
-            name="notes"
-            value={formData.notes}
-            onChange={handleChange}
-            rows={4}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div> */}
-
-            {/* Advanced Settings */}
-
             {/* Footer */}
             <div className="flex items-center justify-between pt-4">
               <button
@@ -285,7 +289,7 @@ const PasswordManager = ({ refreshData, modelData }) => {
                           userkey:user.userKey
                         });
                         setEditId(modelData.id);
-                        refreshData();
+                        // refreshData();
                         setVisible(false);
                       }, 2000)
                     }
@@ -300,6 +304,7 @@ const PasswordManager = ({ refreshData, modelData }) => {
                       setTimeout(() => {
                         refreshData();
                         setVisible(false);
+                        
                       }, 2000);
                     }}
                     type="submit"
@@ -313,6 +318,7 @@ const PasswordManager = ({ refreshData, modelData }) => {
           </form>
         </div>
       )}
+      <ToastContainer/>
     </>
   );
 };

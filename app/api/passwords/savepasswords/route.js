@@ -8,7 +8,7 @@ export async function POST(req) {
   const body = await req.json();
 
   const { url, name, username, password, owneremail,userkey } = body.formData;
-  console.log("Received body:", body);
+  // console.log("Received body:", body);
 
   if (!url || !name || !username || !password || !owneremail) {
     return NextResponse.json(
@@ -48,7 +48,7 @@ console.log("ha pass");
         status: "success",
         message: "Data Stored",
       },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
