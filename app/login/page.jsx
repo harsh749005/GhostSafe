@@ -7,11 +7,16 @@ import InputField from "../components/InputField";
 import PasswordField from "../components/PasswordField";
 import axios from "axios";
 import {useUser} from '../context/UserContext'
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [progress,setProgress] = useState(false);
+
+
 const {setUser } = useUser();
 
 
@@ -41,7 +46,10 @@ const {setUser } = useUser();
           setUser({name:response.data.user.name,email:response.data.user.email})
           setEmail("");
           setPassword("");
-          window.location.href = "/allitems";
+          setProgress(true);
+          setTimeout(()=>{
+            window.location.href = "/allitems";
+          },3000)
           console.log(response)
         }
       } catch (error) {
@@ -60,6 +68,7 @@ const {setUser } = useUser();
   return (
     <>
       <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+
         {/* Left sidebar with logo and tagline */}
         <div className="hidden md:flex md:w-2/5 lg:w-1/3 flex-col bg-[#131313] p-10 justify-center items-center">
           {/* <div className="mb-8">
@@ -135,7 +144,18 @@ const {setUser } = useUser();
                 type="submit"
                 className="w-full border-1 border-[#2b2b2b] hover:bg-[#1f1f1f] text-[#B0B0B0] font-medium py-3 rounded-md transition-colors duration-200"
               >
-                Log in
+                {
+                  progress ? (
+                        <Box sx={{ display: 'flex' ,justifyContent: 'center',
+    alignItems: 'center',
+ }}>
+      <CircularProgress size="30px"/>
+    </Box>
+                  ):(
+"Log in"
+                  )
+                }
+                
               </button>
             </form>
 
