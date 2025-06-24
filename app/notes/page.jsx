@@ -1,18 +1,44 @@
 "use client";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import Notes from "../components/modules/Notes";
 import { useUser } from "../context/UserContext";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function NotesManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
-  const { user, visible, setVisible,isEditing, setIsEditing } = useUser();
+  const { user, visible, setVisible, isEditing, setIsEditing } = useUser();
   const [loding, setLoding] = useState(false);
   const [data, setData] = useState([]);
-   const [mdata, setMdata] = useState([]);   // data is from Notes model , not from api 
+  const [mdata, setMdata] = useState([]); // data is from Notes model , not from api
 
+  const notify = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: 1,
+      theme: "dark",
+    });
+  };
+  const notifyError = (message) => {
+    toast.error(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  };
   const fetchData = async () => {
     setLoding(true);
     const userCookie = document.cookie
@@ -22,7 +48,7 @@ export default function NotesManager() {
 
     if (userCookie) {
       const user = JSON.parse(decodeURIComponent(userCookie));
-      console.log("User from cookie:", user);
+      // console.log("User from cookie:", user);
 
       try {
         const response = await axios.get(
@@ -30,14 +56,15 @@ export default function NotesManager() {
         );
         setData(response.data.result);
       } catch (err) {
-        console.error("Error fetching data:", err);
+        // console.error("Error fetching data:", err);
+        notifyError("Something went wrong");
       } finally {
         setTimeout(() => {
           setLoding(false); // Stop loading (in both success or error)
         }, 1000);
       }
     } else {
-      console.warn("User cookie not found");
+      // console.warn("User cookie not found");
       setLoding(false);
     }
   };
@@ -48,28 +75,26 @@ export default function NotesManager() {
   //  Deletion
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(
-        `api/notes/deletenotes?id=${id}`
-      );
+      const response = await axios.delete(`api/notes/deletenotes?id=${id}`);
       setData((prev) => prev.filter((data) => data.id !== id));
       if (response) {
-        alert("deleted");
+        notify("Notes Deleted");
       }
     } catch (err) {
-      console.error("Error deleting item:", err);
+      // console.error("Error deleting item:", err);
+      notifyError("Error deleting notes");
     }
   };
-// Edit
+  // Edit
   const handleEdit = async (id) => {
     try {
       setMdata(data.filter((item) => item.id === id));
-      console.log("ha ho gyaa");
+      // console.log("ha ho gyaa");
     } catch (err) {
-      console.error("Error deleting item:", err);
+      // console.error("Error deleting item:", err);
+      notifyError("Error deleting notes");
     }
   };
-
-
 
   return (
     <>
@@ -121,19 +146,16 @@ export default function NotesManager() {
               </div>
 
               <div className="grid grid-cols-4 gap-4">
-                
                 {/* Sample Items */}
-                {
-                loding ? (
+                {loding ? (
                   <h1 className="text-gray-500 font-medium text-center py-4">
                     Loding...
                   </h1>
-                ):data.length === 0 ? (
+                ) : data.length === 0 ? (
                   <h1 className="text-gray-400 font-medium text-center py-4">
                     No password entries found.
                   </h1>
-                ):(
-
+                ) : (
                   data.map((data, index) => (
                     <div
                       key={index}
@@ -143,11 +165,14 @@ export default function NotesManager() {
                     >
                       <div className="flex items-center space-x-3">
                         <div className="flex flex-col gap-2">
-                          <img src="/images/notes.svg" alt="notes" className="w-4 text-[#b0b0b0] " />
+                          <img
+                            src="/images/notes.svg"
+                            alt="notes"
+                            className="w-4 text-[#b0b0b0] "
+                          />
                           <h4 className="font-medium text-md text-[#B0B0B0] max-w-52  ">
                             {data.name}
                           </h4>
-                        
                         </div>
                       </div>
                       {hoveredIndex === index && (
@@ -160,17 +185,17 @@ export default function NotesManager() {
                                 setVisible(true);
                                 handleEdit(data.id);
                               }}
-
-                            className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition">
+                              className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition cursor-pointer"
+                            >
                               Edit
                             </button>
-                            <button 
+                            <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleDelete(data.id);
                               }}
-                            
-                            className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition">
+                              className="text-sm cursor-pointer font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition"
+                            >
                               Delete
                             </button>
                           </div>
@@ -178,11 +203,7 @@ export default function NotesManager() {
                       )}
                     </div>
                   ))
-                )
-                
-                }
-                
-
+                )}
               </div>
             </div>
           </main>
@@ -199,8 +220,9 @@ export default function NotesManager() {
         >
           +
         </button>
-        {visible && <Notes refreshData={fetchData} modelData={mdata}/>}
+        {visible && <Notes refreshData={fetchData} modelData={mdata} />}
       </div>
+      <ToastContainer />
     </>
   );
 }

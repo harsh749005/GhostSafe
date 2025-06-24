@@ -2,10 +2,24 @@ import { useEffect, useState } from "react";
 import { Star, X, ChevronDown } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 import axios, { isAxiosError } from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const SecureNote = ({ refreshData, modelData }) => {
   const { user, visible, setVisible, isEditing, setIsEditing } = useUser();
   const [editId, setEditId] = useState(null);
+
+  const notify = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: 1,
+      theme: "dark",
+    });
+  };
 
   useEffect(() => {
     if (modelData.length > 0 && user?.email && isEditing) {
@@ -14,18 +28,17 @@ const SecureNote = ({ refreshData, modelData }) => {
         name: modelData[0].name,
         notes: modelData[0].notes,
         owneremail: user.email,
-        userkey:user.userKey
+        userkey: user.userKey,
       });
       setEditId(modelData[0].id);
     }
   }, [modelData, user]);
 
-  
   const [formData, setFormData] = useState({
     name: "",
     notes: "",
     owneremail: user?.email,
-    userkey:user.userKey
+    userkey: user.userKey,
   });
 
   const handleChange = (e) => {
@@ -35,7 +48,7 @@ const SecureNote = ({ refreshData, modelData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
 
     if (!isEditing) {
       try {
@@ -46,14 +59,14 @@ const SecureNote = ({ refreshData, modelData }) => {
           notes: "",
         }));
         if (response.status === 200) {
-          alert("Notes Stored");
+          notify("Notes added");
         }
       } catch (error) {
         if (isAxiosError(error)) {
           if (error.response && error.response.status === 409) {
-            alert("Data already exists");
+            notify("Data already exists");
           } else {
-            alert(error.response?.data?.message || "Something went wrong");
+            notify(error.response?.data?.message || "Something went wrong");
           }
         }
       }
@@ -68,15 +81,15 @@ const SecureNote = ({ refreshData, modelData }) => {
           name: "",
           notes: "",
         }));
-        if (response.status === 200) {
-          alert("Updated Successfully");
+        if (response) {
+          notify("Updated Successfully");
           refreshData();
         }
-        console.log(response);
-        console.log("Form submitted:", formData);
+        // console.log(response);
+        // console.log("Form submitted:", formData);
       } catch (error) {
         if (isAxiosError(error)) {
-          alert(error.response?.data?.message || "Something went wrong");
+          notify(error.response?.data?.message || "Something went wrong");
         }
       }
     }
@@ -188,7 +201,7 @@ const SecureNote = ({ refreshData, modelData }) => {
                         setFormData({
                           name: modelData.name,
                           owneremail: modelData.email,
-                          userkey:modelData.userKey
+                          userkey: modelData.userKey,
                         });
                         setEditId(modelData.id);
                         refreshData();
@@ -219,6 +232,7 @@ const SecureNote = ({ refreshData, modelData }) => {
           </form>
         </div>
       )}
+      <ToastContainer />
     </>
   );
 };
