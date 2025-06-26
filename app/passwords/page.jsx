@@ -182,8 +182,7 @@ export default function PasswordManager() {
                                 handleEdit(data.id);
                                 
                               }}
-                              style={{borderRadius:"2px"}}
-                              className=" cursor-pointer text-[8px] md:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 md:py-1 rounded-sm md:rounded shadow-sm transition"
+                              className=" cursor-pointer text-[8px] md:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 md:py-1 rounded-[2px] md:rounded shadow-sm transition"
                             >
                               Edit
                             </button>
@@ -192,8 +191,7 @@ export default function PasswordManager() {
                                 e.stopPropagation();
                                 handleDelete(data.id);
                               }}
-                              style={{padding:"2px 10px",borderRadius:"2px"}}
-                              className=" cursor-pointer text-[8px] md:text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-2 md:px-3 md:rounded shadow-sm transition"
+                              className=" cursor-pointer text-[8px] md:text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-2 py-[2px] md:py-1 md:px-3  rounded-[2px] md:rounded shadow-sm transition"
                             >
                               Delete
                             </button>
