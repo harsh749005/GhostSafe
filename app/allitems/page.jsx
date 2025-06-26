@@ -102,10 +102,10 @@ function allitems() {
         <Navbar />
 
         {/* Content */}
-        <main className="p-6">
-          <div className="flex items-center justify-between mb-6">
+        <main className="p-4 md:p-6">
+          <div className="flex items-center justify-between mb-4 md:mb-6">
             <h2
-              className="text-xl font-semibold text-[#dededb]"
+              className="text-[12px] md:text-xl font-semibold text-[#dededb]"
               style={{ fontFamily: "Inter" }}
             >
               All Items
@@ -129,39 +129,39 @@ function allitems() {
               backgroundColor: "var(--cardContainer)",
               border: "1px solid #2b2b2b",
             }}
-            className=" rounded-lg shadow p-4"
+            className="p-2 rounded-lg shadow md:p-4"
           >
             {/* Notes */}
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium text-[#B0B0B0] text-xl">Notes </h3>
+            <div className="flex items-center justify-between  mb-2 md:mb-4">
+              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">Notes </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
             {loding ? (
-              <h1 className="text-gray-500 font-medium text-center py-4">
+              <h1 className="text-gray-500 font-medium text-center text-[10px] py-2 md:py-4">
                 Loding...
               </h1>
             ) : notes.length === 0 ? (
-              <h1 className="text-gray-400 font-medium text-center py-4">
+              <h1 className="text-gray-400 font-medium text-center text-[10px] py-2 md:py-4">
                 No Notes found.
               </h1>
             ) : (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-2 md:gap-4">
                 {/* Sample Items */}
                 {notes.map((data, index) => (
                   <div
                     key={index}
                     onMouseLeave={() => setHoverIndex(null)}
                     onMouseEnter={() => setHoverIndex(index)}
-                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                    className="w-20 p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-md md:rounded-lg hover:shadow-md transition"
                   >
                     <div className="flex items-center space-x-3">
                       <div>
                         <img
                           src="/images/notes.svg"
                           alt="notes"
-                          className="w-4 text-[#b0b0b0] "
+                          className="w-2 md:w-4 text-[#b0b0b0] "
                         />
-                        <h4 className="font-medium text-lg text-[#B0B0B0]">
+                        <h4 className=" line-clamp-1 mt-2 font-medium w-full text-[10px] md:text-lg text-[#B0B0B0]">
                           {data.name}
                         </h4>
                         {/* <p className="text-sm text-[#B0B0B0]">harshpatel2641</p> */}
@@ -185,34 +185,34 @@ function allitems() {
             )}
 
             {/* Passowrds */}
-            <div className="flex items-center justify-between mt-4 mb-4">
-              <h3 className="font-medium text-[#B0B0B0] text-xl">Passwords </h3>
+            <div className="flex items-center justify-between mt-4 mb-2 md:mb-4">
+              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">Passwords </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
             {loding ? (
-              <h1 className="text-gray-500 font-medium text-center py-4">
+              <h1 className="text-gray-500 font-medium text-center text-[10px] py-2 md:py-4">
                 Loding...
               </h1>
             ) : password.length === 0 ? (
-              <h1 className="text-gray-400 font-medium text-center py-4">
+              <h1 className="text-gray-400 font-medium text-center text-[10px] py-2 md:py-4">
                 No Passwords found.
               </h1>
             ) : (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-2 md:gap-4">
                 {password.map((data, index) => (
                   <div
                     key={data.id || index}
                     // onClick={() => console.log(data.id)}
                     // onMouseLeave={() => setHoverIndex(null)}
                     // onMouseEnter={() => setHoverIndex(index)}
-                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                    className="w-20 p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-md md:rounded-lg hover:shadow-md transition"
                   >
                     <div className="flex items-center space-x-3">
                       <div>
-                        <h4 className="font-medium text-lg text-[#B0B0B0]">
+                        <h4 className="font-medium text-[10px] md:text-lg text-[#B0B0B0]">
                           {data.name}
                         </h4>
-                        <p className="text-sm text-[#B0B0B0]">
+                        <p className=" line-clamp-1 text-[8px] md:text-sm text-[#B0B0B0]">
                           {data.username}
                         </p>
                       </div>
@@ -249,40 +249,33 @@ function allitems() {
             )}
 
             {/* Address */}
-            <div className="flex items-center justify-between mt-4 mb-4">
-              <h3 className="font-medium text-[#B0B0B0] text-xl">Address </h3>
+            <div className="flex items-center justify-between mt-4 mb-2 md:mb-4">
+              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">Address </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
             {loding ? (
-              <h1 className="text-gray-500 font-medium text-center py-4">
+              <h1 className="text-gray-500 font-medium text-center text-[10px] py-2 md:py-4">
                 Loding...
               </h1>
             ) : address.length === 0 ? (
-              <h1 className="text-gray-400 font-medium text-center py-4">
+              <h1 className="text-gray-400 font-medium text-center text-[10px] py-2 md:py-4">
                 No Address found.
               </h1>
             ) : (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-4">
                 {address.map((data, index) => (
                   <div
                     key={index}
                     // onMouseLeave={() => setHoverIndex(null)}
                     // onMouseEnter={() => setHoverIndex(index)}
-                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                    className="w-20 p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e]  rounded-md md:rounded-lg hover:shadow-md transition"
                   >
                     <div className="flex items-center space-x-3">
-                      {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
-                      <img
-                        src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
-                        alt="Instagram"
-                        className="w-6 h-6"
-                      />
-                    </div> */}
                       <div>
-                        <h4 className="font-medium text-lg text-[#B0B0B0]">
+                        <h4 className="font-medium text-[10px] md:text-lg text-[#B0B0B0]">
                           {data.name}
                         </h4>
-                        <p className="text-sm text-[#B0B0B0]">
+                        <p className="line-clamp-1 text-[8px] md:text-sm text-[#B0B0B0]">
                           {data.username}
                         </p>
                       </div>
@@ -319,45 +312,39 @@ function allitems() {
             )}
 
             {/* Payment Cards */}
-            <div className="flex items-center justify-between mt-4 mb-4">
-              <h3 className="font-medium text-[#B0B0B0] text-xl">
+            <div className="flex items-center justify-between mt-4 mb-2 md:mb-4">
+              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">
                 Payment Cards{" "}
               </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
             {loding ? (
-              <h1 className="text-gray-500 font-medium text-center py-4">
+              <h1 className="text-gray-500 font-medium text-center text-[10px] py-2 md:py-4">
                 Loding...
               </h1>
             ) : paymentCards.length === 0 ? (
-              <h1 className="text-gray-400 font-medium text-center py-4">
+              <h1 className="text-gray-400 font-medium text-center text-[10px] py-2 md:py-4">
                 No Notes found.
               </h1>
             ) : (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-4">
                 {paymentCards.map((data, index) => (
                   <div
                     key={index}
                     // onMouseLeave={() => setHoverIndex(null)}
                     // onMouseEnter={() => setHoverIndex(index)}
-                    className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                    className="w-20 p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-md md:rounded-lg  hover:shadow-md transition"
                   >
                     <div className="flex items-center space-x-3">
-                      {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
-                        <img
-                          src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
-                          alt="Instagram"
-                          className="w-6 h-6"
-                        />
-                      </div> */}
+
                       <div>
-                        <h4 className="font-medium text-lg text-[#B0B0B0]">
+                        <h4 className="font-medium text-[10px] md:text-lg text-[#B0B0B0]">
                           {data.name}
                         </h4>
-                        <p className="text-sm text-[#B0B0B0]">
+                        <p className="text-[8px] md:text-sm text-[#B0B0B0]">
                           {data.nameoncard}
                         </p>
-                        <p className="text-sm text-[#B0B0B0]">{data.number}</p>
+                        <p className="text-[8px] md:text-sm text-[#B0B0B0]">{data.number}</p>
                       </div>
                     </div>
                     {hoveredIndex === index && (
@@ -392,42 +379,35 @@ function allitems() {
             )}
 
             {/* Bank Account */}
-            <div className="flex items-center justify-between mt-4 mb-4">
-              <h3 className="font-medium text-[#B0B0B0] text-xl">
+            <div className="flex items-center justify-between mt-4 mb-2 md:mb-4">
+              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">
                 Bank Account{" "}
               </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
-                        {loding ? (
-              <h1 className="text-gray-500 font-medium text-center py-4">
+            {loding ? (
+              <h1 className="text-gray-500 font-medium text-[10px] text-center py-2 md:py-4">
                 Loding...
               </h1>
             ) : bankAccount.length === 0 ? (
-              <h1 className="text-gray-400 font-medium text-center py-4">
+              <h1 className="text-gray-400 font-medium text-[10px] text-center py-2 md:py-4">
                 No Notes found.
               </h1>
             ) :(
-            <div className="grid grid-cols-4 gap-4">
+            <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-2 md:gap-4">
               {bankAccount.map((data, index) => (
                 <div
                   key={index}
                   // onMouseLeave={() => setHoverIndex(null)}
                   // onMouseEnter={() => setHoverIndex(index)}
-                  className="relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                  className="w-20 p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg hover:shadow-md transition"
                 >
                   <div className="flex items-center space-x-3">
-                    {/* <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-zinc-200">
-                    <img
-                      src="https://www.instagram.com/static/images/ico/favicon.ico/36b3ee2d91ed.ico"
-                      alt="Instagram"
-                      className="w-6 h-6"
-                    />
-                  </div> */}
                     <div>
-                      <h4 className="font-medium text-lg text-[#B0B0B0]">
+                      <h4 className="font-medium text-[10px] md:text-lg text-[#B0B0B0]">
                         {data.name}
                       </h4>
-                      <p className="text-sm text-[#B0B0B0]">{data.bankname}</p>
+                      <p className="line-clamp-1 text-[8px] md:text-sm text-[#B0B0B0]">{data.bankname}</p>
                     </div>
                   </div>
                   {hoveredIndex === index && (
