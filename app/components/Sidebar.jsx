@@ -51,7 +51,7 @@ export default function Sidebar() {
   ];
   return (
     <div
-      className="w-64  text-white p-4 flex flex-col"
+      className="w-28 md:w-64  text-white p-4 flex flex-col"
       style={{
         backgroundColor: "var(--sidebar)",
         borderRight: "2px solid #2b2b2b",
@@ -64,26 +64,26 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1 ">
-        <h2 className="text-[#B0B0B0] font-medium text-[12px] mb-4">ACCOUNT</h2>
+        <h2 className="text-[#B0B0B0] font-medium text-[10px] md:text-[16px] mb-4  ">ACCOUNT</h2>
         {sidebarItems.map((item) => (
           <Link href={"/"+item.id}
             key={item.id}
             onClick={() => setSelectedCategory(item.id)}
-            className={`w-full text-left px-4 py-2 rounded-lg mb-1 flex items-center font-medium ${
+            className={`text-[8px] py-1 px-1  md:text-[16px] w-full text-left md:px-4 md:py-2 rounded-sm md:rounded-lg mb-1 flex items-center font-medium ${
               selectedCategory === item.id
                 ? "bg-[#2a2929] text-white"
                 : "text-zinc-300 hover:bg-zinc-700/50"
             }`}
           >
-            <img className="w-4 h-4 mr-2" src={item.img} alt="" />
+            <img className="w-2 h-2 mr-1 md:w-4 md:h-4 md:mr-2" src={item.img} alt="" />
             {/* <span className="mr-3">{item.icon}</span> */}
             {item.label}
           </Link>
         ))}
       </nav>
 
-      <div className="mt-auto pt-4 border-t border-zinc-700">
-        <div className="flex items-center justify-between text-sm text-zinc-400">
+      <div className="mt-auto pt-2 md:pt-4 border-t border-zinc-700">
+        <div className="flex flex-col md:flex-row gap-2 items-center justify-between text-[8px] md:text-sm text-zinc-400">
           <span>27 days left in trial</span>
           <button className="px-3 py-1 bg-zinc-700 rounded-full hover:bg-zinc-600 text-white">
             Upgrade

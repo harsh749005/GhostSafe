@@ -17,7 +17,7 @@ export default function Navbar() {
 
   return (
     <header
-      className=" border-b  p-4"
+      className=" border-b p-3 md:p-4"
       style={{
         backgroundColor: "var(--background)",
         borderBottom: "2px solid #2b2b2b",
@@ -25,7 +25,7 @@ export default function Navbar() {
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center flex-1 max-w-2xl">
-          <h1 className="text-[#dededb] text-xl font-bold mr-8">GhostSafe</h1>
+          <h1 className="text-[#dededb] text-[12px] md:text-xl font-bold mr-8">GhostSafe</h1>
           {/* <div className="flex-1 relative">
             <input
               type="text"
@@ -52,12 +52,12 @@ export default function Navbar() {
               </button> */}
           <div
             onMouseEnter={() => setVisibility(true)}
-            className=" w-10 h-10 object-cover rounded-lg"
+            className=" w-6 h-6 md:w-10 md:h-10 object-cover  md:rounded-lg"
           >
             <img
               src="/images/nature.png"
               alt=""
-              className="w-full h-full rounded-lg"
+              className="w-full h-full md:rounded-lg rounded-[5px]"
             />
             {/* <span className="text-zinc-600">👤</span> */}
 
