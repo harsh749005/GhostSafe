@@ -22,6 +22,19 @@ export default function PasswordManager() {
       theme: "dark",
     });
   };
+    const notifyError = (message) => {
+    toast.error(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  };
   const [hoveredIndex, setHoverIndex] = useState(null);
   const { visible, setVisible, setIsEditing } = useUser();
   const [loding, setLoding] = useState(true);
@@ -47,14 +60,17 @@ export default function PasswordManager() {
           setLoding(false);
         }, 3000);
       } catch (err) {
-        console.error("Error fetching data:", err);
+        // console.error("Error fetching data:", err);
+        notifyError("Error fetching data");
+        setLoding(false); // Stop loading in case of error
       } finally {
         setTimeout(() => {
           setLoding(false); // Stop loading (in both success or error)
         }, 1000);
       }
     } else {
-      console.warn("User cookie not found");
+      // console.warn("User cookie not found");
+      notifyError("Something went wrong");
       setLoding(false);
     }
   };
@@ -73,7 +89,8 @@ export default function PasswordManager() {
         notify("Deleted");
       }
     } catch (err) {
-      console.error("Error deleting item:", err);
+      // console.error("Error deleting item:", err);
+      notifyError("Error deleting item");
     }
   };
   // Edit Handler
@@ -82,7 +99,8 @@ export default function PasswordManager() {
       setMdata(data.filter((item) => item.id === id));
       
     } catch (err) {
-      console.error("Error deleting item:", err);
+      // console.error("Error deleting item:", err);
+      notifyError("Error editing item");
     }
   };
 
@@ -109,18 +127,7 @@ export default function PasswordManager() {
               >
                 Passwords
               </h2>
-              {/* <div className="flex items-center space-x-2">
-                <select
-                  className="px-3 py-2  rounded-lg text-sm font-medium"
-                  style={{
-                    border: "1px solid #2e2e2e",
-                    color: "#B0B0B0",
-                    fontFamily: "Inter",
-                  }}
-                >
-                  <option>Folder (a-z)</option>
-                </select>
-              </div> */}
+           
             </div>
 
             <div
@@ -128,10 +135,10 @@ export default function PasswordManager() {
                 backgroundColor: "var(--cardContainer)",
                 border: "1px solid #2b2b2b",
               }}
-              className=" rounded-lg shadow p-4"
-            >
+            className="p-2 rounded-lg shadow md:p-4">
+            
               <div className="flex items-center justify-between mb-2 md:mb-4">
-                <h3 className="font-medium text-[#B0B0B0] text-[12px] md:text-2xl">Social </h3>
+                <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-2xl">Social </h3>
               </div>
 
               <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-2 md:gap-4">
@@ -166,7 +173,7 @@ export default function PasswordManager() {
                           <h4 className="font-medium text-[10px] md:text-lg text-[#B0B0B0]">
                             {data.name}
                           </h4>
-                          <p className=" line-clamp-1 text-[8px] md:text-sm text-[#B0B0B0]">
+                          <p className="line-clamp-1 text-[8px] md:text-sm text-[#B0B0B0]">
                             {data.username}
                           </p>
                         </div>

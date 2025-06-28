@@ -137,10 +137,9 @@ export default function PaymentInfoManager() {
                 backgroundColor: "var(--cardContainer)",
                 border: "1px solid #2b2b2b",
               }}
-              className=" rounded-lg shadow p-4"
-            >
+            className="p-2 rounded-lg shadow md:p-4">
               <div className="flex items-center justify-between mb-2 md:mb-4">
-                <h3 className="font-medium text-[#B0B0B0] text-[12px] md:text-2xl">Social </h3>
+                <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-2xl">Social </h3>
                 {/* <span className="text-sm text-zinc-500">↓</span> */}
               </div>
 
@@ -184,7 +183,7 @@ export default function PaymentInfoManager() {
                           <p className="text-[8px] md:text-sm text-[#B0B0B0]">
                             {data.nameoncard}
                           </p>
-                          <p className="text-[8px] md:text-sm text-[#B0B0B0]">
+                          <p className="line-clamp-1 text-[8px] md:text-sm text-[#B0B0B0]">
                             {data.number}
                           </p>
                         </div>
@@ -199,7 +198,7 @@ export default function PaymentInfoManager() {
                                 setVisible(true);
                                 handleEdit(data.id);
                               }}
-                              className="text-[8px] md:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 md:py-1 rounded-[2px] md:rounded shadow-sm transition"
+                              className="cursor-pointer text-[8px] md:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 md:py-1 rounded-[2px] md:rounded shadow-sm transition"
                             >
                               Edit
                             </button>
@@ -208,7 +207,7 @@ export default function PaymentInfoManager() {
                                 e.stopPropagation();
                                 handleDelete(data.id);
                               }}
-                              className="text-[8px] md:text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-2 py-[2px] md:py-1 md:px-3 rounded-[2px] md:rounded shadow-sm transition"
+                              className="cursor-pointer text-[8px] md:text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-2 py-[2px] md:py-1 md:px-3 rounded-[2px] md:rounded shadow-sm transition"
                             >
                               Delete
                             </button>
