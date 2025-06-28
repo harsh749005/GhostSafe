@@ -1,13 +1,14 @@
 "use client";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useUser } from "../context/UserContext";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import { useEffect, useState } from "react";
-import { useUser } from "../context/UserContext";
 import PaymentCard from "../components/modules/PaymentCard";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
-import { ToastContainer, toast } from "react-toastify"
-import axios from "axios";
+
 export default function PaymentInfoManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
   const { user, visible, setVisible, isEditing, setIsEditing } = useUser();
@@ -137,9 +138,12 @@ export default function PaymentInfoManager() {
                 backgroundColor: "var(--cardContainer)",
                 border: "1px solid #2b2b2b",
               }}
-            className="p-2 rounded-lg shadow md:p-4">
+              className="p-2 rounded-lg shadow md:p-4"
+            >
               <div className="flex items-center justify-between mb-2 md:mb-4">
-                <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-2xl">Social </h3>
+                <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-2xl">
+                  Social{" "}
+                </h3>
                 {/* <span className="text-sm text-zinc-500">↓</span> */}
               </div>
 
@@ -217,7 +221,6 @@ export default function PaymentInfoManager() {
                     </div>
                   ))
                 )}
-                
               </div>
             </div>
           </main>

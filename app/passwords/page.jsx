@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useUser } from "../context/UserContext";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Password from "../components/modules/Password";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
-import { ToastContainer, toast } from "react-toastify";
-import { useUser } from "../context/UserContext";
 
 export default function PasswordManager() {
   const notify = (message) => {
@@ -22,7 +22,7 @@ export default function PasswordManager() {
       theme: "dark",
     });
   };
-    const notifyError = (message) => {
+  const notifyError = (message) => {
     toast.error(message, {
       position: "top-center",
       autoClose: 5000,
@@ -40,7 +40,6 @@ export default function PasswordManager() {
   const [loding, setLoding] = useState(true);
   const [data, setData] = useState([]);
   const [mdata, setMdata] = useState([]); //data from model Passwords ,no request made
-
 
   // FetchData Handler
   const fetchData = async () => {
@@ -85,7 +84,6 @@ export default function PasswordManager() {
       );
       setData((prev) => prev.filter((data) => data.id !== id));
       if (response.status === 200) {
-        
         notify("Deleted");
       }
     } catch (err) {
@@ -97,7 +95,6 @@ export default function PasswordManager() {
   const handleEdit = async (id) => {
     try {
       setMdata(data.filter((item) => item.id === id));
-      
     } catch (err) {
       // console.error("Error deleting item:", err);
       notifyError("Error editing item");
@@ -127,7 +124,6 @@ export default function PasswordManager() {
               >
                 Passwords
               </h2>
-           
             </div>
 
             <div
@@ -135,10 +131,12 @@ export default function PasswordManager() {
                 backgroundColor: "var(--cardContainer)",
                 border: "1px solid #2b2b2b",
               }}
-            className="p-2 rounded-lg shadow md:p-4">
-            
+              className="p-2 rounded-lg shadow md:p-4"
+            >
               <div className="flex items-center justify-between mb-2 md:mb-4">
-                <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-2xl">Social </h3>
+                <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-2xl">
+                  Social{" "}
+                </h3>
               </div>
 
               <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-2 md:gap-4">
@@ -162,7 +160,7 @@ export default function PasswordManager() {
                   data.map((data, index) => (
                     <div
                       key={data.id || index}
-                      onClick={() => console.log(data.id)}
+                      // onClick={() => console.log(data.id)}
                       onMouseLeave={() => setHoverIndex(null)}
                       onMouseEnter={() => setHoverIndex(index)}
                       // style={{ borderRadius: "10px" }}
@@ -187,7 +185,6 @@ export default function PasswordManager() {
                                 setIsEditing(true);
                                 setVisible(true);
                                 handleEdit(data.id);
-                                
                               }}
                               className=" cursor-pointer text-[8px] md:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 md:py-1 rounded-[2px] md:rounded shadow-sm transition"
                             >

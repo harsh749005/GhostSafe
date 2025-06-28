@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect, use } from "react";
-import logo from "../../public/images/nature.png";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import axios from "axios";
+
 function allitems() {
   const [cookie, setCookie] = useState("");
   const [hoveredIndex, setHoverIndex] = useState(null);
@@ -133,7 +133,9 @@ function allitems() {
           >
             {/* Notes */}
             <div className="flex items-center justify-between  mb-2 md:mb-4">
-              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">Notes </h3>
+              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">
+                Notes{" "}
+              </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
             {loding ? (
@@ -186,7 +188,9 @@ function allitems() {
 
             {/* Passowrds */}
             <div className="flex items-center justify-between mt-4 mb-2 md:mb-4">
-              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">Passwords </h3>
+              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">
+                Passwords{" "}
+              </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
             {loding ? (
@@ -250,7 +254,9 @@ function allitems() {
 
             {/* Address */}
             <div className="flex items-center justify-between mt-4 mb-2 md:mb-4">
-              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">Address </h3>
+              <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">
+                Address{" "}
+              </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
             {loding ? (
@@ -336,7 +342,6 @@ function allitems() {
                     className="w-20 p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-md md:rounded-lg  hover:shadow-md transition"
                   >
                     <div className="flex items-center space-x-3">
-
                       <div>
                         <h4 className="font-medium text-[10px] md:text-lg text-[#B0B0B0]">
                           {data.name}
@@ -344,7 +349,9 @@ function allitems() {
                         <p className="text-[8px] md:text-sm text-[#B0B0B0]">
                           {data.nameoncard}
                         </p>
-                        <p className="text-[8px] md:text-sm text-[#B0B0B0]">{data.number}</p>
+                        <p className="text-[8px] md:text-sm text-[#B0B0B0]">
+                          {data.number}
+                        </p>
                       </div>
                     </div>
                     {hoveredIndex === index && (
@@ -393,27 +400,29 @@ function allitems() {
               <h1 className="text-gray-400 font-medium text-[10px] text-center py-2 md:py-4">
                 No Notes found.
               </h1>
-            ) :(
-            <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-2 md:gap-4">
-              {bankAccount.map((data, index) => (
-                <div
-                  key={index}
-                  // onMouseLeave={() => setHoverIndex(null)}
-                  // onMouseEnter={() => setHoverIndex(index)}
-                  className="w-20 p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg hover:shadow-md transition"
-                >
-                  <div className="flex items-center space-x-3">
-                    <div>
-                      <h4 className="font-medium text-[10px] md:text-lg text-[#B0B0B0]">
-                        {data.name}
-                      </h4>
-                      <p className="line-clamp-1 text-[8px] md:text-sm text-[#B0B0B0]">{data.bankname}</p>
+            ) : (
+              <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-2 md:gap-4">
+                {bankAccount.map((data, index) => (
+                  <div
+                    key={index}
+                    // onMouseLeave={() => setHoverIndex(null)}
+                    // onMouseEnter={() => setHoverIndex(index)}
+                    className="w-20 p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg hover:shadow-md transition"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div>
+                        <h4 className="font-medium text-[10px] md:text-lg text-[#B0B0B0]">
+                          {data.name}
+                        </h4>
+                        <p className="line-clamp-1 text-[8px] md:text-sm text-[#B0B0B0]">
+                          {data.bankname}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  {hoveredIndex === index && (
-                    <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
-                      <div className="flex flex-col space-y-2">
-                        {/* <button
+                    {hoveredIndex === index && (
+                      <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
+                        <div className="flex flex-col space-y-2">
+                          {/* <button
                               //   onClick={(e) => {
                               //   e.stopPropagation();
                               //   setIsEditing(true);
@@ -431,15 +440,13 @@ function allitems() {
                           className="text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition">
                             Delete
                           </button> */}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            )
-          }
-
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </main>
       </div>
