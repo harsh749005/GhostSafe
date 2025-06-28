@@ -4,8 +4,10 @@ import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import Notes from "../components/modules/Notes";
 import { useUser } from "../context/UserContext";
-import axios from "axios";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
 export default function NotesManager() {
   const [hoveredIndex, setHoverIndex] = useState(null);
@@ -76,9 +78,12 @@ export default function NotesManager() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(`api/notes/deletenotes?id=${id}`);
-      setData((prev) => prev.filter((data) => data.id !== id));
-      if (response) {
+      if (response.status === 200) {
         notify("Notes Deleted");
+        setTimeout(()=>{
+          setData((prev) => prev.filter((data) => data.id !== id));
+          window.location.reload();
+        },2000)
       }
     } catch (err) {
       // console.error("Error deleting item:", err);
@@ -111,10 +116,10 @@ export default function NotesManager() {
         >
           <Navbar />
           {/* Content */}
-          <main className="p-6">
+        <main className="p-4 md:p-6">
             <div className="flex items-center justify-between mb-6">
               <h2
-                className="text-xl font-semibold text-[#dededb]"
+              className="text-[12px] md:text-xl font-semibold text-[#dededb]"
                 style={{ fontFamily: "Inter" }}
               >
                 Notes
@@ -138,21 +143,26 @@ export default function NotesManager() {
                 backgroundColor: "var(--cardContainer)",
                 border: "1px solid #2b2b2b",
               }}
-              className=" rounded-lg shadow p-4"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-[#B0B0B0] text-2xl">Social </h3>
+            className="p-2 rounded-lg shadow md:p-4">
+              <div className="flex items-center justify-between mb-2 md:mb-4">
+                <h3 className="text-[10px] font-medium text-[#B0B0B0] md:text-2xl">Social </h3>
                 {/* <span className="text-sm text-zinc-500">↓</span> */}
               </div>
 
-              <div className="grid grid-cols-4 gap-4">
+              <div className="flex flex-wrap flex-row md:grid md:grid-cols-4 gap-2 md:gap-4">
                 {/* Sample Items */}
                 {loding ? (
-                  <h1 className="text-gray-500 font-medium text-center py-4">
-                    Loding...
-                  </h1>
-                ) : data.length === 0 ? (
-                  <h1 className="text-gray-400 font-medium text-center py-4">
+                  data.map((item, index) => (
+                    <Stack key={item.id} spacing={1}>
+                      <Skeleton
+                        variant="rounded"
+                        width={"100%"}
+                        height={80}
+                        sx={{ backgroundColor: "#2a2a2a" }}
+                      />
+                    </Stack>
+                  ))                ) : data.length === 0 ? (
+              <h1 className="text-gray-400 font-medium text-center text-[10px] md:text-lg py-4">
                     No password entries found.
                   </h1>
                 ) : (
@@ -161,23 +171,23 @@ export default function NotesManager() {
                       key={index}
                       onMouseLeave={() => setHoverIndex(null)}
                       onMouseEnter={() => setHoverIndex(index)}
-                      className="relative min-h-20 cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-lg p-4 hover:shadow-md transition"
+                      className="w-full p-2 md:w-full md:p-4 relative cursor-pointer bg-[#222] border border-[#2e2e2e] rounded-md md:rounded-lg  hover:shadow-md transition"
                     >
                       <div className="flex items-center space-x-3">
                         <div className="flex flex-col gap-2">
                           <img
                             src="/images/notes.svg"
                             alt="notes"
-                            className="w-4 text-[#b0b0b0] "
+                            className="w-3 md:w-4 text-[#b0b0b0] "
                           />
-                          <h4 className="font-medium text-md text-[#B0B0B0] max-w-52  ">
+                          <h4 className="font-medium line-clamp-1 text-[10px] md:text-lg text-[#B0B0B0] max-w-52  ">
                             {data.name}
                           </h4>
                         </div>
                       </div>
                       {hoveredIndex === index && (
-                        <div className="bg-transparent border border-[#2e2e2e] rounded-lg p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
-                          <div className="flex flex-col space-y-2">
+                        <div className="bg-transparent border-none p-2 hover:shadow-md transition w-full h-full absolute top-0 left-0 flex justify-end items-start">
+                          <div className="flex md:flex-col gap-2 md:gap-0 md:space-y-2">
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -185,7 +195,7 @@ export default function NotesManager() {
                                 setVisible(true);
                                 handleEdit(data.id);
                               }}
-                              className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm transition cursor-pointer"
+                              className=" cursor-pointer text-[8px] md:text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 md:py-1 rounded-[2px] md:rounded shadow-sm transition"
                             >
                               Edit
                             </button>
@@ -194,7 +204,7 @@ export default function NotesManager() {
                                 e.stopPropagation();
                                 handleDelete(data.id);
                               }}
-                              className="text-sm cursor-pointer font-semibold bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded shadow-sm transition"
+                              className=" cursor-pointer text-[8px] md:text-sm font-semibold bg-red-600 hover:bg-red-500 text-white px-2 py-[2px] md:py-1 md:px-3  rounded-[2px] md:rounded shadow-sm transition"
                             >
                               Delete
                             </button>
