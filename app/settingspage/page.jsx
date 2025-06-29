@@ -131,7 +131,7 @@ export default function PaymentInfoManager() {
 
                   <button
                     onClick={changeName}
-                    className="mt-5 text-white cursor-pointer font-medium bg-zinc-600 hover:bg-zinc-300 px-4 py-2 rounded text-[10px] md:text-sm transition-colors"
+                    className="mt-5 cursor-pointer font-medium bg-zinc-600 hover:bg-zinc-300 px-4 py-2 rounded text-[10px] md:text-sm transition-colors"
                   >
                     Save
                   </button>
