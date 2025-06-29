@@ -1,10 +1,10 @@
 "use client";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
-import PaymentCard from "../components/modules/PaymentCard";
 import { useUser } from "../context/UserContext";
 import axios from "axios";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import PaymentCard from "../components/modules/PaymentCard";
 
 export default function PaymentInfoManager() {
   const { user } = useUser();
@@ -56,10 +56,10 @@ export default function PaymentInfoManager() {
         <div className="flex-1 overflow-hidden" onClick={() => {}}>
           <Navbar />
           {/* Content */}
-          <main className="p-6">
+          <main className="p-4 md:p-6">
             <div className="flex items-center justify-between mb-6">
               <h2
-                className="text-xl font-semibold text-[#dededb]"
+                className="text-[12px] md:text-xl font-semibold text-[#dededb]"
                 style={{ fontFamily: "Inter" }}
               >
                 Account Settings
@@ -71,23 +71,23 @@ export default function PaymentInfoManager() {
               //   backgroundColor: "var(--cardContainer)",
               //   border: "1px solid #2b2b2b",
               // }}
-              className=" rounded-lg shadow p-4 flex flex-col gap-5"
+              className=" rounded-lg shadow md:p-4"
             >
               {/* Personal Information Section */}
-              <div className=" border border-[#2e2e2e] rounded-lg p-6 m-[auto] w-[650px]">
-                <h2 className="text-xl font-medium mb-6 text-[#dedede]">
+              <div className=" border border-[#2e2e2e] rounded-lg p-2 md:p-6 m-[auto] md:w-[650px]">
+                <h2 className="text-[10px] font-medium text-[#B0B0B0] md:text-xl">
                   Personal information
                 </h2>
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <label className="block text-sm mb-2 text-[#949494] font-medium">
+                <div className="mt-6">{/*className="grid grid-cols-2 gap-4 md:mb-6 mt-6"*/}
+                  <div className="flex flex-col gap-2 justify-between ">
+                    <label className="block text-[10px] md:text-sm mb-2 text-[#949494] font-medium">
                       Name
                     </label>
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-500"
+                      className=" text-[10px] md:text-[16px] w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-500"
                     />
                   </div>
                   {/* <div>
@@ -108,22 +108,22 @@ export default function PaymentInfoManager() {
                   Save
                 </button> */}
 
-                <div className="mt-8 ">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm text-[#949494] font-medium">
+                <div className="md:mt-8 mt-6">
+                  <div className="flex flex-col gap-2 justify-between ">
+                    <label className="text-[10px] md:text-sm text-[#949494] font-medium">
                       Email
                     </label>
                     {/* <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
                       Change email
-                    </button> */}
+                      </button> */}
+                      <input
+                        type="text"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                          className="w-full text-[10px] md:text-[16px] md:w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-500"
+                      />
                   </div>
 
-                  <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2 text-zinc-500 focus:outline-none focus:border-zinc-500"
-                  />
                   {/* 
                   <div className="w-full  border-2 border-[#2e2e2e] rounded px-3 py-2  focus:outline-none focus:border-zinc-500">
                     {email}
@@ -131,7 +131,7 @@ export default function PaymentInfoManager() {
 
                   <button
                     onClick={changeName}
-                    className="mt-5 cursor-pointer font-medium bg-zinc-600 hover:bg-zinc-300 px-4 py-2 rounded text-sm transition-colors"
+                    className="mt-5 text-white cursor-pointer font-medium bg-zinc-600 hover:bg-zinc-300 px-4 py-2 rounded text-[10px] md:text-sm transition-colors"
                   >
                     Save
                   </button>
