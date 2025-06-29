@@ -37,7 +37,7 @@ export default function PaymentInfoManager() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      transition: Bounce,
+      // transition: Bounce,
     });
   };
   const fetchData = async () => {

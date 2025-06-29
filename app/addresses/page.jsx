@@ -32,7 +32,7 @@ export default function AddressManager() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      transition: Bounce,
+      // transition: Bounce,
     });
   };
 

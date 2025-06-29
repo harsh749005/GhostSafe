@@ -32,7 +32,7 @@ export default function BankAccountManager() {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      transition: Bounce,
+      // transition: Bounce,
     });
   };
   const [hoveredIndex, setHoverIndex] = useState(null);
