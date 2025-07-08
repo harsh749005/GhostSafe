@@ -1,7 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import logo from "../public/images/nature.png";
-import Password from "./components/modules/Password";
+import { useEffect } from "react";
 import Sidebar from "./components/Sidebar"
 import Navbar from "./components/Navbar"
 function App() {
@@ -32,13 +30,13 @@ function App() {
             >
               All Items
             </h2>
-            <div className="flex items-center space-x-2">
-              {/* <button className="p-2 hover:bg-zinc-100 rounded-lg">
+            {/* <div className="flex items-center space-x-2">
+              <button className="p-2 hover:bg-zinc-100 rounded-lg">
                 <span className="text-zinc-600">🔍</span>
               </button>
               <button className="p-2 hover:bg-zinc-100 rounded-lg">
                 <span className="text-zinc-600">📋</span>
-              </button> */}
+              </button>
               <select
                 className="px-3 py-2  rounded-lg text-sm font-medium"
                 style={{
@@ -49,7 +47,7 @@ function App() {
               >
                 <option>Folder (a-z)</option>
               </select>
-            </div>
+            </div> */}
           </div>
 
           <div
@@ -63,13 +61,9 @@ function App() {
               <h3 className="font-medium text-[#B0B0B0] text-2xl">Social </h3>
               {/* <span className="text-sm text-zinc-500">↓</span> */}
             </div>
-
-          
           </div>
         </main>
       </div>
-
-
     </div>
   );
 }
