@@ -80,7 +80,7 @@ function Login() {
           <div className="flex-grow flex flex-col justify-center max-w-md mx-auto w-full">
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-white mb-2">
-                Create your free account
+                Create your account
               </h1>
               <p className="text-[#b0b0b0]">Connect to GhostSafe with:</p>
             </div>
