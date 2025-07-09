@@ -1,7 +1,7 @@
 "use server";
 import { neon } from "@neondatabase/serverless";
 
-export const sql = neon('postgresql://axamine_owner:npg_YStnb5PMVk3u@ep-gentle-unit-a2z23hab-pooler.eu-central-1.aws.neon.tech/axamine?sslmode=require');
+export const sql = neon('postgresql://axamine_owner:npg_4v5NwqsIEKzV@ep-gentle-unit-a2z23hab-pooler.eu-central-1.aws.neon.tech/axamine?sslmode=require&channel_binding=require');
 let dbReady = false;
 
 export async function ensureDBReady() {
