@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Star, X, Maximize2, ChevronDown } from "lucide-react";
+import { X } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 import axios from "axios";
 
@@ -203,21 +203,21 @@ const emptyForm = () => {
 
         <div
           style={{ border: "2px solid white" }}
-          className=" bg-white shadow-lg rounded-lg w-4xl mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          className=" bg-white shadow-lg rounded-lg w-80 md:w-2xl h-96 lg:h-[500px] xl:h-max xl:overflow-hidden overflow-scroll lg:w-4xl  mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         >
           {/* Header */}
           <div className="bg-[#212121] text-white px-4 py-3 flex items-center justify-between rounded-t-lg">
             <div className="flex items-center space-x-2">
-              <button className="hover:bg-red-700 p-1 rounded">
+              {/* <button className="hover:bg-red-700 p-1 rounded">
                 <ChevronDown className="h-5 w-5" />
-              </button>
-              <h2 className="text-lg font-medium">Edit address</h2>
+              </button> */}
+              <h2 className="text-lg font-medium text-[#b0b0b0]">Address</h2>
             </div>
             <div className="flex items-center space-x-2">
-              <button className="hover:bg-red-700 p-1 rounded">
+              {/* <button className="hover:bg-red-700 p-1 rounded">
                 <Maximize2 className="h-5 w-5" />
-              </button>
-              <button onClick={() => setVisible(false)} className="hover:bg-red-700 p-1 rounded">
+              </button> */}
+              <button onClick={() => setVisible(false)} className="hover:bg-red-700 p-1 rounded bg-red-500">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -243,7 +243,7 @@ const emptyForm = () => {
                 </div>
 
                 {/* Advanced Settings */}
-                <div>
+                {/* <div>
                   <button
                     type="button"
                     className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
@@ -253,7 +253,7 @@ const emptyForm = () => {
                       Advanced Settings:
                     </span>
                   </button>
-                </div>
+                </div> */}
               </div>
 
               {/* Right Column - Address Form */}

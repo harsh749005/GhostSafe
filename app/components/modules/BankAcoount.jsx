@@ -1,9 +1,9 @@
-import { useEffect ,useState } from "react";
-import { Star, X, Maximize2, ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import {X} from "lucide-react";
 import { useUser } from "../../context/UserContext";
 
 import axios from "axios";
-const BankAcoount = ({refreshData,modelData}) => {
+const BankAcoount = ({ refreshData, modelData }) => {
   const { user, visible, setVisible, isEditing, setIsEditing } = useUser();
   const [editId, setEditId] = useState(null);
   useEffect(() => {
@@ -14,7 +14,7 @@ const BankAcoount = ({refreshData,modelData}) => {
         name: data.name,
         bankname: data.bankname,
         type: data.type,
-        number:data.number,
+        number: data.number,
         swiftcode: data.swiftcode,
         ibannumber: data.ibannumber,
         branchname: data.branchname,
@@ -22,7 +22,7 @@ const BankAcoount = ({refreshData,modelData}) => {
         pinnumber: data.pinnumber,
         notes: data.notes,
         owneremail: user.email,
-        userkey:user.userKey
+        userkey: user.userKey,
       });
       setEditId(data.id);
     }
@@ -39,8 +39,8 @@ const BankAcoount = ({refreshData,modelData}) => {
     branchaddress: "",
     pinnumber: "",
     notes: "",
-    owneremail:user.email,
-    userkey:user.userKey
+    owneremail: user.email,
+    userkey: user.userKey,
   });
 
   const handleChange = (e) => {
@@ -62,8 +62,7 @@ const BankAcoount = ({refreshData,modelData}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!isEditing){
-
+    if (!isEditing) {
       try {
         const response = await axios.post("/api/bankAccount/storeBankAccount", {
           formData,
@@ -80,7 +79,6 @@ const BankAcoount = ({refreshData,modelData}) => {
           branchaddress: "",
           pinnumber: "",
           notes: "",
-          
         }));
         if (response.status === 200) {
           alert("Data Stored");
@@ -92,8 +90,8 @@ const BankAcoount = ({refreshData,modelData}) => {
           alert(error.response?.data?.message || "Something went wrong");
         }
       }
-    }else{
-            try {
+    } else {
+      try {
         const response = await axios.put("/api/bankAccount/editBankAccount", {
           id: editId,
           ...formData,
@@ -115,16 +113,14 @@ const BankAcoount = ({refreshData,modelData}) => {
           alert("Updated Successfully");
           refreshData();
         }
-
       } catch (error) {
         alert(error.response?.data?.message || "Something went wrong");
       }
     }
   };
 
-  const emptyForm = () =>{
+  const emptyForm = () => {
     setFormData({
-
       ...prev,
       name: "",
       bankname: "",
@@ -136,10 +132,8 @@ const BankAcoount = ({refreshData,modelData}) => {
       branchaddress: "",
       pinnumber: "",
       notes: "",
-      
-    }
-      );
-  }
+    });
+  };
   return (
     // <div
     //   className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -147,21 +141,26 @@ const BankAcoount = ({refreshData,modelData}) => {
     // >
     <div
       style={{ border: "2px solid white" }}
-      className=" bg-white shadow-lg rounded-lg w-4xl mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      className=" bg-white shadow-lg rounded-lg w-80 md:w-2xl h-96 lg:h-[500px] xl:h-max xl:overflow-hidden overflow-scroll lg:w-4xl  mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       {/* Header */}
-      <div className="bg-[#1c1c1c] text-white px-4 py-3 flex items-center justify-between rounded-t-lg">
+      <div className="bg-[#1c1c1c] px-4 py-3 flex items-center justify-between rounded-t-lg">
         <div className="flex items-center space-x-2">
-          <button className="hover:bg-red-700 p-1 rounded">
+          {/* <button className="hover:bg-red-700 p-1 rounded">
             <ChevronDown className="h-5 w-5" />
-          </button>
-          <h2 className="text-lg font-medium">Add bank account</h2>
+          </button> */}
+          <h2 className="text-lg font-medium text-[#b0b0b0]">
+            Add bank account
+          </h2>
         </div>
         <div className="flex items-center space-x-2">
-          <button className="hover:bg-red-700 p-1 rounded">
+          {/* <button className="hover:bg-red-700 p-1 rounded">
             <Maximize2 className="h-5 w-5" />
-          </button>
-          <button className="hover:bg-red-700 p-1 rounded">
+          </button> */}
+          <button
+            onClick={() => setVisible(false)}
+            className="hover:bg-red-700 p-1 rounded text-white bg-red-500"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -205,17 +204,6 @@ const BankAcoount = ({refreshData,modelData}) => {
                   </button>
                 </div>
               </div> */}
-
-            {/* Advanced Settings */}
-            <div>
-              <button
-                type="button"
-                className="flex items-center space-x-1 text-gray-700 hover:text-gray-900"
-              >
-                <ChevronDown className="h-4 w-4" />
-                <span className="text-sm font-medium">Advanced Settings:</span>
-              </button>
-            </div>
           </div>
 
           {/* Right Column - Card Details */}
@@ -350,7 +338,7 @@ const BankAcoount = ({refreshData,modelData}) => {
         <div className="flex items-center justify-between pt-6">
           <div className="flex items-center space-x-2">
             <button type="button" className="text-gray-600 hover:text-gray-800">
-              <Star className="h-6 w-6" />
+              {/* <Star className="h-6 w-6" /> */}
             </button>
             {/* <button
                 type="button"
@@ -373,62 +361,58 @@ const BankAcoount = ({refreshData,modelData}) => {
           </div>
           <div className="space-x-3">
             <button
-                    onClick={(e) => {
-                    e.stopPropagation();
-                    setVisible(false);
-                    setIsEditing(false);
-                    emptyForm();
-                  }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setVisible(false);
+                setIsEditing(false);
+                emptyForm();
+              }}
               type="button"
               className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded"
             >
               Cancel
             </button>
-            {
-              isEditing ? (
-                  <button
-                    onClick={() =>
-                      setTimeout(() => {
-                        setFormData({
-                              name: modelData.name,
-    bankname: modelData.bankname,
-    type: modelData.type,
-    number: modelData.number,
-    swiftcode: modelData.swiftcode,
-    ibannumber: modelData.ibannumber,
-    branchname: modelData.branchname,
-    branchaddress: modelData.branchaddress,
-    pinnumber: modelData.pinnumber,
-    notes: modelData.notes,
-    // owneremail:user.email
-                         
-                        });
-                        setEditId(modelData.id);
-                        refreshData();
-                        setVisible(false);
-                      }, 2000)
-                    }
-                    type="submit"
-                    className="px-4 py-2 text-white bg-blue-600 cursor-pointer hover:bg-blue-500 rounded"
-                  >
-                    Edit
-                  </button>
-              ):(
-
-            <button
-                    onClick={() => {
-                      setTimeout(() => {
-                        refreshData();
-                        setVisible(false);
-                      }, 2000);
-                    }}
-              type="submit"
-              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded cursor-pointer"
-            >
-              Save
-            </button>
-              )
-            }
+            {isEditing ? (
+              <button
+                onClick={() =>
+                  setTimeout(() => {
+                    setFormData({
+                      name: modelData.name,
+                      bankname: modelData.bankname,
+                      type: modelData.type,
+                      number: modelData.number,
+                      swiftcode: modelData.swiftcode,
+                      ibannumber: modelData.ibannumber,
+                      branchname: modelData.branchname,
+                      branchaddress: modelData.branchaddress,
+                      pinnumber: modelData.pinnumber,
+                      notes: modelData.notes,
+                      // owneremail:user.email
+                    });
+                    setEditId(modelData.id);
+                    refreshData();
+                    setVisible(false);
+                  }, 2000)
+                }
+                type="submit"
+                className="px-4 py-2 text-white bg-blue-600 cursor-pointer hover:bg-blue-500 rounded"
+              >
+                Edit
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setTimeout(() => {
+                    refreshData();
+                    setVisible(false);
+                  }, 2000);
+                }}
+                type="submit"
+                className="px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded cursor-pointer"
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
       </form>

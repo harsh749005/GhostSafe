@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Star, X, ChevronDown } from "lucide-react";
+import {X} from "lucide-react";
 import { useUser } from "../../context/UserContext";
 import axios, { isAxiosError } from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -107,22 +107,19 @@ const SecureNote = ({ refreshData, modelData }) => {
       {visible && (
         <div
           style={{ border: "2px solid white" }}
-          className=" bg-white shadow-lg rounded-lg w-4xl mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          className=" bg-white shadow-lg rounded-lg w-80 md:w-2xl h-96 lg:h-[500px] xl:h-max xl:overflow-hidden overflow-scroll lg:w-4xl  mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         >
           {/* Header */}
-          <div className="bg-[#212121] text-[#b0b0b0] px-4 py-3 flex items-center justify-between rounded-t-lg">
+          <div className="bg-[#212121]  px-4 py-3 flex items-center justify-between rounded-t-lg">
             <div className="flex items-center space-x-2">
-              <button className="hover:bg-red-700 p-1 rounded">
-                <ChevronDown className="h-5 w-5" />
-              </button>
-              <h2 className="text-lg font-medium">Edit secure note</h2>
+              <h2 className="text-lg font-medium text-[#b0b0b0]">Notes</h2>
             </div>
             <div className="flex items-center space-x-2">
               {/* <button className="hover:bg-red-700 p-1 rounded">
               <Maximize2 className="h-5 w-5" />
             </button> */}
               <button
-                className="hover:bg-red-700 p-1 rounded"
+                className="hover:bg-red-700 p-1 rounded text-white bg-red-600"
                 onClick={() => setVisible(false)}
               >
                 <X className="h-5 w-5" />
@@ -177,7 +174,7 @@ const SecureNote = ({ refreshData, modelData }) => {
                   type="button"
                   className="text-gray-600 hover:text-gray-800"
                 >
-                  <Star className="h-6 w-6" />
+                  {/* <Star className="h-6 w-6" /> */}
                 </button>
               </div>
               <div className="space-x-3">
@@ -222,7 +219,7 @@ const SecureNote = ({ refreshData, modelData }) => {
                       }, 2000);
                     }}
                     type="submit"
-                    className="px-4 py-2 text-white bg-blue-500 cursor-pointer hover:bg-blue-600 rounded"
+                    className="px-4 py-2 text-white bg-green-600 cursor-pointer hover:bg-green-700 rounded"
                   >
                     Save
                   </button>
