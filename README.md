@@ -1,6 +1,6 @@
 # 👻 GhostSafe  
 
-**GhostSafe** is a secure web application designed to store users' **confidential data** such as passwords, bank details, card information, and personal notes — all encrypted and protected by modern authentication practices.
+**GhostSafe** is a secure web application designed to store users' **confidential data** such as passwords, bank details, card information, and personal notes — all encrypted and protected by modern authentication practices. 
 
 ---
 
